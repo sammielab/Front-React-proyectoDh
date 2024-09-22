@@ -1,0 +1,188 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: top;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-color: #D9CBBF;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Colores */
+
+.beige{
+  color: #F2EAE4;
+}
+.arena{
+  color:#D9CBBF;
+}
+.marron{
+  color: #A6866A;
+}
+.marron-darker{
+  color:#734E38;
+}
+.purple{
+  color:#B889D7; 
+}
+.black{
+  color:#181415;
+}
+
+/* Opacity */
+.op-50{
+  opacity: 50%;
+}
+
+.bg-beige{
+  background-color: #F2EAE4;
+}
+.bg-beige-ligther{
+  
+}
+/* Header */
+
+
+.header{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.registro-login{
+  display: flex;
+}
+#logo{
+  width: 40px;
+  height: 40px;
+  padding: 0%;
+}
+
+.blackfoot{
+  color: #D9CBBF;
+  background-color: #181415;
+  padding-top: 4rem;
+  position: absolute;
+  bottom: 0; 
+  width: 100vw;
+  text-align: center;
+ 
+}
+
+
+
+.card{
+  display: flex;
+  border: 1px solid #ccc; 
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  flex-direction: row;
+  align-content: center;
+}
+
+.card-img{
+  width: 100px ;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.card-content{
+  flex: 1;
+}
+
+.card-title{
+  margin:0%;
+}
+
+.card-description{
+  margin:0 0 10 0; 
+
+}
+
+.card-price{
+  margin: 0; 
+  font-weight: bold;
+
+}
+
+.remove-button{
+  background-color: blanchedalmond;
+  cursor: pointer;
+  transition: .5s all ease;
+}
+
+.add-button{
+  background-color: cornflowerblue;
+  cursor: pointer;
+  transition: .5s all ease;
+  border: none;
+  border-radius: 5px;
+  color: aliceblue;
+}
+
+.add-button:hover{
+  background-color: lightblue;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
