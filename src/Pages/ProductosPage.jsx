@@ -27,9 +27,11 @@ export const ProductosPage = () => {
             <Card
             id={product.id}
             image={product.image}
-            title={product.title}
-            description={product.description}
-            price={product.price}
+            title={product.titulo}
+            description={product.descripcion}
+            price={product.precio}
+            caracteristicas={product.caracteristicas}
+            disponibilidad={product.disponibilidad}
             />
         ))}
         </>

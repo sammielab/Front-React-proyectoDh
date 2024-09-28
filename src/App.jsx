@@ -8,6 +8,7 @@ import {HomePage} from './Pages/HomePage'
 import { ProductosProvider } from './Context/ProductosProvider'
 import { ProductosPage } from './Pages/ProductosPage'
 import { AdminPage } from './Pages/AdminPage'
+import { Register } from './Pages/Register'
 import { Footer } from './Components/Footer'
 
 
@@ -21,6 +22,7 @@ export const App = () => {
          <Route path='/productos' element={<ProductosPage/>}></Route>
          <Route path='/admin' element={<AdminPage/>}></Route>
          <Route path='/*' element={<Navigate to='/' />}></Route>
+         <Route path='/register' element={<Register></Register>}></Route>
     </Routes>
   </ProductosProvider>
   )

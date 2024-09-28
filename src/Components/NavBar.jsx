@@ -27,9 +27,11 @@ export default function NavBar() {
             <li className="nav-item">
             <a className="nav-link" href="#">Iniciar Sesión</a>
             </li>
-            <li className="nav-item">
-            <a className="nav-link" href="#">Registrate</a>
-            </li>
+            <NavLink to='/register'>
+              <li className="nav-item">
+              <a className="nav-link" href="#">Registrate</a>
+              </li>
+            </NavLink>
         </div>
       
       </ul>

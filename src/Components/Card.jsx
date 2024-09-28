@@ -28,7 +28,7 @@ export const Card = ({id, image, title, description, price}) => {
   return (
     <>
     <div className="card">
-        <img src="{image}" alt="{title}" className="card-img" />
+        <img src="{image}" alt="imagen" className="card-img" />
 
         <div className="card-content">
             <h3 className="card-title">{title}</h3>
