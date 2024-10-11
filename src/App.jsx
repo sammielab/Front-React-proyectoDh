@@ -10,20 +10,20 @@ import { ProductosPage } from './Pages/ProductosPage'
 import { AdminPage } from './Pages/AdminPage'
 import { Register } from './Pages/Register'
 import { Footer } from './Components/Footer'
+import RequireAuth from './Components/RequireAuth'
+import { AuthProvider } from './Context/AuthProvider'
+import {Home} from './Components/Home'
 
 
 export const App = () => {
+  
   return (
     <ProductosProvider>
     <NavBar></NavBar>
-   
-    <Routes>
-         <Route path='/' element={<HomePage/>}></Route>
-         <Route path='/productos' element={<ProductosPage/>}></Route>
-         <Route path='/admin' element={<AdminPage/>}></Route>
-         <Route path='/*' element={<Navigate to='/' />}></Route>
-         <Route path='/register' element={<Register></Register>}></Route>
-    </Routes>
+    {/* <Buscador></Buscador> */}
+    <Home></Home>
+    {/* <Recomendaciones></Recomendaciones> */}
+    <Footer></Footer>
   </ProductosProvider>
   )
 

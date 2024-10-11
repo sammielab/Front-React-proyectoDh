@@ -1,39 +1,48 @@
 import {ProductosContext} from '../Context/ProductosContext'
-import {useContext, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {Card} from '../Components/Card'
-import { Pagination } from '../Components/Pagination'
+import NavBar from '../Components/NavBar'
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 export const ProductosPage = () => {
 
-    const {products} = useContext(ProductosContext)
-    const [postsPerPage, setPostsPerPage] = useState(5)
-    const [currentPage, setCurrentPage] = useState(1); 
+  const { products, error, currentPage, setCurrentPage, getTotalPages } = useContext(ProductosContext);
 
-    const lastPostIndex = currentPage * postsPerPage; 
-    const firstPostIndex = lastPostIndex - postsPerPage;
 
-    const currentPosts = products.slice(firstPostIndex, lastPostIndex)
+
+    const handlePageChange = (event, value) => {
+      setCurrentPage(value);
+    };
+
+
+    // const currentPosts = products.slice(firstPostIndex, lastPostIndex)
       return (
         <>
+        <NavBar></NavBar>
         <div>Productos</div>
         <hr />
-        <Pagination
+        <Stack spacing={2}>
+          <Pagination count={getTotalPages} page={currentPage +1 }  onChange={(event, value) => setCurrentPage(value - 1)}  />
+        </Stack>
+        {/* <div>
+          <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage == 0} >Anterior</button>
+          <span>{currentPage}</span>
+          <button onClick={() => setCurrentPage(currentPage + 1)}>Siguiente</button>
+        </div> */}
+        {/* <Pagination
           totalPosts={products.length} 
           postsPerPage={postsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
-        />
-        {currentPosts.map(product => (
+        /> */}
+        {products.map(product => (
             <Card
-            id={product.id}
-            image={product.image}
-            title={product.titulo}
-            description={product.descripcion}
-            price={product.precio}
-            caracteristicas={product.caracteristicas}
-            disponibilidad={product.disponibilidad}
+            product={product}
+           
             />
         ))}
+       
         </>
       )
     }

@@ -1,43 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import {ProductosContext} from './ProductosContext'
-
+import { useQuery } from 'react-query'
+import { fetchProducts } from '../api/productsService'
+import {getAllProducts} from '../api/productsManageService'
 
 
 export const ProductosProvider = ({children}) => {
-    
-    const [products, setProducts] = useState([])
-    const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlsQG1haWwuY29tIiwiaWF0IjoxNzI3NDQzNzYwLCJleHAiOjE3Mjg5MTQ5ODl9.XUxLVuehndlOdsRAPQ9SACfKSDMvNpUgU_D3t_8Nzmo"
-    
-    const fetchProducts = async () => {
-      try {
-          const response = await fetch('http://localhost:8080/productos/findAll', {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
-                  'Content-Type': 'application/json',
-              },
-          });
-  
-          if (!response.ok) {
-              throw new Error("Not ok");
-          }
-  
-          const data = await response.json(); // Espera a que se resuelva la promesa
-          console.log(data); // Verifica los datos recibidos
-          setProducts(data); // Actualiza el estado con los productos
-  
-      } catch (error) {
-          console.error('Error fetching products:', error); // Maneja el error aquí
+  const token = localStorage.getItem('authToken')
+    const [postsPerPage, setPostsPerPage] = useState(2)
+    const [currentPage, setCurrentPage] = useState(0); // Estado para la página actual
+    const {data = [], error } = useQuery(['products', currentPage], () => fetchProducts(currentPage, postsPerPage, token),{keepPreviousData:true});
+    const [getTotalPages, setTotalPages] = useState(); 
+
+    const calculatePages = async() => {
+      try{
+        const products = await getAllProducts(); 
+        setTotalPages(products.length / postsPerPage); 
+      }catch(e){
+        console.error(e)
       }
-  };
-      
-    
+    }
+
     useEffect(() => {
-        fetchProducts()
-    }, [])
-    
+      calculatePages();
+    }, [data])
+
+
       return (
-          <ProductosContext.Provider value={{products}}>
+          <ProductosContext.Provider value={{products: data, error, currentPage, setCurrentPage, getTotalPages}}>
             {children}
           </ProductosContext.Provider>
       )
