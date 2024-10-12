@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import { FormGroup } from '@mui/material';
@@ -11,12 +11,10 @@ export const Login = () => {
   const {setAuth} = useAuth();  
   const {auth} = useAuth();
   const location = useLocation();
-  let from = location.state?.from
+  let from = location.state?.from || '/'
   const navigate = useNavigate();
   const match = from.match(/^\/productos\/(\d+)$/);
-  console.log(match)
 
-  console.log(from)
   const [userData, setUserData] = useState({
     email: '', 
     password: '',
@@ -98,6 +96,8 @@ export const Login = () => {
                 body: JSON.stringify(userData)
             });
 
+            console.log(response)
+
             if (!response.ok) {
               setShowAlert({
                 "msg": 'Login Inválido',
@@ -115,6 +115,8 @@ export const Login = () => {
             }
     
             const data = await response.json(); // Espera a que se resuelva la promesa
+            console.log(data)
+           
             const token = data.token; 
             localStorage.setItem('authToken', token);
   
@@ -130,11 +132,15 @@ export const Login = () => {
                         withCredentials:true,
                     },
                 });
+
+                console.log(response)
                 if (!response.ok) {
                     throw new Error("Not ok");
                 }
         
                 const data = await response.json(); 
+                console.log(data)
+
                 setAuth({
                   email: data.email,
                   password: data.password,
@@ -285,8 +291,10 @@ export const Login = () => {
         </h1>
       </div>
 
-{match &&  (
+{match ?  (
   <h3>El login es obligatorio</h3>
+): (
+  <h3>Ingrese sus datos</h3>
 )}
       <form className="row g-3" onSubmit={handleSubmit}>
       <div className="col-auto">

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from "react-router-dom"; // Importa useParams
-import NavBar from '../Components/NavBar'
-import {CheckCategoria} from '../Components/CheckCategoria.jsx'
+import NavBar from '../../../Components/Navegacion/NavBar'
+import {CheckCategoria} from '../../../Components/Categoria/CheckCategoria.jsx'
 
 
 export const AddCategoriaToProduct = () => {

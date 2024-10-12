@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import NavBar from '../Components/NavBar'
-import {getCatalogos} from '../api/getAllCatalogos'
-import {deleteCatalogo} from '../api/deleteCatalogo'
+import NavBar from '../../Components/Navegacion/NavBar'
+import {getCatalogos} from '../../api/getAllCatalogos'
+import {deleteCatalogo} from '../../api/deleteCatalogo'
 
 export const CatalogoPage = () => {
 

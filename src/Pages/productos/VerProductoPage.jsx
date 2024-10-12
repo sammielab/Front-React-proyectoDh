@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import NavBar from '../Components/NavBar'
+import NavBar from '../../Components/Navegacion/NavBar'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { findProductById } from '../api/findProduct';
+import { findProductById } from '../../api/findProduct';
 import { useParams } from "react-router-dom"; 
 import { useEffect } from 'react';
 import { Accessible, Elevator, Favorite, FavoriteBorderRounded, FitnessCenter, Garage, Liquor, Pets, Pool, Restaurant, RoomService, SignalWifi3Bar, SmokeFree, Spa, Weekend, Yard } from '@mui/icons-material';
-import FavButton from '../Components/FavButton'
-import useAuth from "../hooks/useAuth";
+import FavButton from '../../Components/FavButton'
+import useAuth from "../../hooks/useAuth";
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';

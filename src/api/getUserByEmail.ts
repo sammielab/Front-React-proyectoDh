@@ -17,12 +17,19 @@ export const getUserByEmail = async (email, token) => {
         if (!response.ok) {
             throw new Error("Not ok");
         }else{
-            const data = await response.json(); // Espera a que se resuelva la promesa
-            return data; 
+            
+            try{
+                const data = await response.json(); // Espera a que se resuelva la promesa
+                console.log(data)
+                return data; 
+
+            }catch(e){
+                console.log(e.message)
+            }
         }
 
     } catch (error) {
-        console.error('Error fetching products:', error); // Maneja el error aquí
+        console.error('Error fetching user:', error.message, error.stack); // Maneja el error aquí
     }
 
     

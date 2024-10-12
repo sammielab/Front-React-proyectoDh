@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {findProductById} from '../api/findProduct';
-import {fetchCaracteristicas} from '../api/fetchCaracteristicas';
+import {findProductById} from '../../api/findProduct';
+import {fetchCaracteristicas} from '../../api/fetchCaracteristicas';
 
 export const AddCaract = ({token, id}) => {
 

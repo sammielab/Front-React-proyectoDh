@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from '../Components/NavBar'
+import NavBar from '../../../Components/Navegacion/NavBar'
 import { useNavigate } from 'react-router-dom'
-import {deleteCategoria} from '../api/deleteCategoria'
-import { getCategorias } from '../api/getCategorias';
+import {deleteCategoria} from '../../../api/deleteCategoria'
+import { getCategorias } from '../../../api/getCategorias';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';

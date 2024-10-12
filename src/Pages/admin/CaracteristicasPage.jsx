@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {fetchCaracteristicas} from '../api/fetchCaracteristicas';
-import {deleteCaracteristica} from '../api/deleteCaracteristica'
-import NavBar from '../Components/NavBar'
+import {fetchCaracteristicas} from '../../api/fetchCaracteristicas';
+import {deleteCaracteristica} from '../../api/deleteCaracteristica'
+import NavBar from '../../Components/Navegacion/NavBar'
 import { useNavigate } from 'react-router-dom'
 
 

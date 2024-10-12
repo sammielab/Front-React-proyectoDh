@@ -1,6 +1,6 @@
 import React from 'react'
-import {AddProducts} from '../Components/AddProducts'
-import NavBar from '../Components/NavBar'
+import {AddProducts} from '../../../Components/Productos/AddProducts'
+import NavBar from '../../../Components/Navegacion/NavBar'
 
 export const AgregarProductos = () => {
 

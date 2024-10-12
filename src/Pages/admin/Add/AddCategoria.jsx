@@ -1,6 +1,6 @@
 import React from 'react'
-import NavBar from '../Components/NavBar'
-import {AddCaract} from '../Components/AddCaract.jsx'
+import NavBar from '../../../Components/Navegacion/NavBar'
+import {AddCaract} from '../../../Components/Caracteristicas/AddCaract.jsx'
 import { useParams } from "react-router-dom"; 
 
 

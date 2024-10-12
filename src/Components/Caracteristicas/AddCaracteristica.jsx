@@ -1,50 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import {findProductById} from '../api/findProduct';
-import {saveCategoria} from '../api/saveCategoria';
+import {findProductById} from '../../api/findProduct';
+import {saveCaracteristicas} from '../../api/createCaracteristica';
 
-export const CategoriasAddItem = () => {
+export const AddCaracteristica = () => {
 
-    const [categoria, setCategoria] = useState('');
+    const [nombre, setNombre] = useState('');
     const [userData, setUserdata] = useState('');
     const token = localStorage.getItem('authToken')
     const [error, setError] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault(); // Evitar el comportamiento predeterminado del formulario
-        if (!categoria) {
+        if (!nombre) {
             setError('El campo de nombre es obligatorio');
             return;
         }
-        if(categoria.length<3){
+        if(nombre.length<3){
             setError('El campo de nombre es obligatorio');
             return;
         }
         setError('');
         
         setUserdata({
-            titulo:categoria
+            nombre:nombre
         })
 
         if(error==''){
-            const data = await saveCategoria(token, userData);
+            const data = await saveCaracteristicas(token, userData);
         }
 
+
         // Limpiar el campo
-        setCategoria('');
+        setNombre('');
     };
 
 return (
     <div className="container mt-5">
-        <h2>Agregar Categoria</h2>
+        <h2>Agregar Nombre</h2>
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
-                <label htmlFor="categoria" className="form-label">Titulo</label>
+                <label htmlFor="nombre" className="form-label">Nombre</label>
                 <input
                     type="text"
                     className={`form-control ${error ? 'is-invalid' : ''}`}
-                    id="categoria"
-                    value={categoria}
-                    onChange={(e) => setCategoria(e.target.value)}
+                    id="nombre"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
@@ -53,6 +54,5 @@ return (
     </div>
 );
 };
-
 
 

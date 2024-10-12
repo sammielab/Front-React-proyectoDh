@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from "react-router-dom"; 
-import NavBar from '../../Components/NavBar';
+import NavBar from '../../Components/Navegacion/NavBar';
 import Box from '@mui/material/Box';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -140,6 +140,8 @@ const handleReserva = async(e) => {
         "msg": '', 
       })
 
+      const currentDate = moment().format('YYYY-MM-DD');
+
       try{
 
         const userId = await getUserByEmail(auth.email, token)
@@ -150,6 +152,7 @@ const handleReserva = async(e) => {
               "id":userId.id,
               "role": auth.role
             }, 
+            "fecha_reserva": currentDate,
             "check_in": checkin, 
             "check_out": checkout, 
             "estado": "confirmado"

@@ -6,35 +6,34 @@ import './index.css'
 import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
 import { HomePage } from './Pages/HomePage.jsx'
-import { Register } from './Pages/Register.jsx'
-import { Login } from './Pages/Login.jsx'
-import { AdminPage } from './Pages/AdminPage.jsx'
+import { Register } from './Pages/session/Register.jsx'
+import { Login } from './Pages/session/Login.jsx'
+import { AdminPage } from './Pages/admin/AdminPage.jsx'
 import {AuthProvider} from './Context/AuthProvider.jsx';
 import RequireAuth from './Components/RequireAuth.jsx'; 
-import UserManagement from './Pages/UserManagement.jsx'; 
-import {ProductsManagement} from './Pages/ProductsManagement.jsx'
-import { ProductosPage } from './Pages/ProductosPage.jsx'
+import UserManagement from './Pages/admin/Edit/UserManagement.jsx'; 
+import {ProductsManagement} from './Pages/admin/Edit/ProductsManagement.jsx'
+import { ProductosPage } from './Pages/productos/ProductosPage.jsx'
 import { ProductosProvider } from './Context/ProductosProvider.jsx'
 import { ProductosManageProvider } from './Context/ProductosManageProvider.jsx'
 import { QueryClient,QueryClientProvider} from 'react-query'
-import { AgregarProductos } from './Pages/AgregarProductos.jsx'
+import { AgregarProductos } from './Pages/admin/Add/AgregarProductos.jsx'
 import {UsuariosProvider} from './Context/UsuariosProvider.jsx'
-import {EditUser} from './Pages/EditUser.jsx'
-import {CatalogoPage} from './Pages/CatalogoPage.jsx'
-import {AddCategoria} from './Pages/AddCategoria.jsx'
-import { CaracteristicasPage } from './Pages/CaracteristicasPage.jsx'
-import {AddCaracteristicasPage} from './Pages/AddCaracteristicasPage.jsx'
-import {CategoriasPage} from './Pages/CategoriasPage.jsx'
-import {CategoriaAdd} from './Pages/CategoriaAdd.jsx'
-import EditCategoriasPage from './Pages/EditCategoriasPage.jsx'
+import {EditUser} from './Pages/admin/Edit/EditUser.jsx'
+import {CatalogoPage} from './Pages/admin/CatalogoPage.jsx'
+import {AddCategoria} from './Pages/admin/Add/AddCategoria.jsx'
+import { CaracteristicasPage } from './Pages/admin/CaracteristicasPage.jsx'
+import {AddCaracteristicasPage} from './Pages/admin/Add/AddCaracteristicasPage.jsx'
+import {CategoriasPage} from './Pages/admin/Edit/CategoriasPage.jsx'
+import {CategoriaAdd} from './Pages/admin/Add/CategoriaAdd.jsx'
+import EditCategoriasPage from './Pages/admin/Edit/EditCategoriasPage.jsx'
 import {PerfilUsuario} from './Pages/usuario/PerfilUsuario.jsx'
-import {AddCategoriaToProduct} from './Pages/AddCategoriaToProduct.jsx'
-import {VerProductoPage} from './Pages/VerProductoPage.jsx'
+import {AddCategoriaToProduct} from './Pages/admin/Add/AddCategoriaToProduct.jsx'
+import {VerProductoPage} from './Pages/productos/VerProductoPage.jsx'
 import {ProductosFavoritos} from './Pages/usuario/ProductosFavoritos.jsx'
 import {ReservaPage} from './Pages/reservas/ReservaPage.jsx'
 import {ConfirmacionReservaPage} from './Pages/reservas/ConfirmacionReservaPage.jsx'
-
-
+import {ReservasUsuario} from './Pages/reservas/ReservasUsuario.jsx'
 
 const query = new QueryClient();
 
@@ -87,6 +86,10 @@ const router = createBrowserRouter([
   {
     path: '/reserva/confirmacion', 
     element: <ConfirmacionReservaPage></ConfirmacionReservaPage>
+  },
+  {
+    path: '/reservas/usuario', 
+    element: <ReservasUsuario></ReservasUsuario>
   },
   {
     path: '/products/categoria/add/:id', 

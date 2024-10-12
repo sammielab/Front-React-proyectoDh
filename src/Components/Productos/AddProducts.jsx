@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {saveFetch} from '../api/createProductService';
+import {saveFetch} from '../../api/createProductService';
 import { useNavigate } from 'react-router-dom';
 
 

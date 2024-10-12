@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import {ProductosManageContext} from '../Context/ProductosManageContext'
-import NavBar from '../Components/NavBar'
+import {ProductosManageContext} from '../../../Context/ProductosManageContext'
+import NavBar from '../../../Components/Navegacion/NavBar'
 import { useContext, useEffect } from 'react'
-import {deleteProduct} from '../api/deleteProductService';
-import useAuth from "../hooks/useAuth";
-import { getAllProducts } from '../api/productsManageService';
+import {deleteProduct} from '../../../api/deleteProductService';
+import useAuth from "../../../hooks/useAuth";
+import { getAllProducts } from '../../../api/productsManageService';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';

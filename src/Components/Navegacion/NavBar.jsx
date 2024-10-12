@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import logo from "../assets/logo.png"
+import logo from "../../assets/logo.png"
 import { NavLink } from "react-router-dom"
-import { CartModal } from "./CartModal";
-import useAuth from "../hooks/useAuth";
+import { CartModal } from "../CartModal";
+import useAuth from "../../hooks/useAuth";
 import {AppRegistration, Logout, Person} from '@mui/icons-material'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -57,6 +57,11 @@ export default function NavBar() {
         navigate('/usuario/favoritos')
       }
 
+
+      const handleReservas = () => {
+        navigate('/reservas/usuario')
+      }
+
   return (
 <nav className="navbar navbar-expand-lg bg-beige">
   <div className="container-fluid">
@@ -82,9 +87,7 @@ export default function NavBar() {
         </li>
     </NavLink>
     )}
-      <li>
-        <a onClick={handleShowModal}>Carrito</a>
-      </li>
+      
 
       { auth && auth.name ? (
         <div className="d-flex">
@@ -108,7 +111,7 @@ export default function NavBar() {
           >
             <MenuItem onClick={handlePerfil}>Perfil</MenuItem>
             <MenuItem onClick={handleProductosFav}>Productos Favoritos</MenuItem>
-            <MenuItem onClick={handleClose}>Reservas</MenuItem>
+            <MenuItem onClick={handleReservas}>Reservas</MenuItem>
             <MenuItem onClick={handleLogout}><Logout></Logout></MenuItem>
           </Menu>
         </div>

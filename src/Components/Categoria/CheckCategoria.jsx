@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {findProductById} from '../api/findProduct';
-import { getCategorias } from '../api/getCategorias';
+import {findProductById} from '../../api/findProduct';
+import { getCategorias } from '../../api/getCategorias';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { getCategoriaById } from '../api/getCategoriaById';
+import { getCategoriaById } from '../../api/getCategoriaById';
 
 export const CheckCategoria = ({id, token}) => {
 

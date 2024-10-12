@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from "../../hooks/useAuth";
-import NavBar from '../../Components/NavBar';
+import NavBar from '../../Components/Navegacion/NavBar';
 import { FormGroup } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';

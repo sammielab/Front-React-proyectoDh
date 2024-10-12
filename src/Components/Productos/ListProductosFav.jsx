@@ -8,8 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { getUserByEmail } from '../api/getUserByEmail';
-import useAuth from "../hooks/useAuth";
+import { getUserByEmail } from '../../api/getUserByEmail';
+import useAuth from "../../hooks/useAuth";
 import { useState } from 'react';
 import { FavoriteBorder } from '@mui/icons-material';
 

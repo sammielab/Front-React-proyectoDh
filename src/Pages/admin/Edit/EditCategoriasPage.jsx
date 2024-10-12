@@ -1,9 +1,9 @@
 import React from 'react'
-import NavBar from '../Components/NavBar'
+import NavBar from '../../../Components/Navegacion/NavBar'
 import { useParams } from "react-router-dom"; // Importa useParams
 import { useState, useEffect } from 'react'
-import {getCategoriaById} from '../api/getCategoriaById.ts'
-import {updateCategoria} from '../api/editCategoria.ts'
+import {getCategoriaById} from '../../../api/getCategoriaById'
+import {updateCategoria} from '../../../api/editCategoria'
 
 
 const EditCategoriasPage = () => {

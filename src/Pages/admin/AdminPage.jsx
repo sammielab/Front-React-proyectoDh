@@ -1,6 +1,6 @@
 import React from 'react'
-import NavBar from '../Components/NavBar'
-import MenuAdmin from '../Components/MenuAdmin'
+import NavBar from '../../Components/Navegacion/NavBar'
+import MenuAdmin from '../../Components/MenuAdmin'
 
 export const AdminPage = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBar from '../../Components/NavBar'
+import NavBar from '../../Components/Navegacion/NavBar'
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; 
 

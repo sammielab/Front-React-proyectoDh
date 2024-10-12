@@ -1,7 +1,7 @@
-import {ProductosContext} from '../Context/ProductosContext'
+import {ProductosContext} from '../../Context/ProductosContext'
 import {useContext, useEffect, useState} from 'react'
-import {Card} from '../Components/Card'
-import NavBar from '../Components/NavBar'
+import {Card} from '../../Components/Productos/Card'
+import NavBar from '../../Components/Navegacion/NavBar'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 

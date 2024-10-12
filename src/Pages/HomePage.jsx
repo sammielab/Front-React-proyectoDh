@@ -1,7 +1,7 @@
 import {Recomendaciones} from '../Components/Recomendaciones'
 import {Buscador} from '../Components/Buscador'
-import { ProductosPage } from './ProductosPage'
-import {Footer} from '../Components/Footer'
+import { ProductosPage } from './productos/ProductosPage'
+import {Footer} from '../Components/Navegacion/Footer'
 
 export const HomePage = () => {
   return (

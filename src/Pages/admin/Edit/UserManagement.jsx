@@ -1,9 +1,9 @@
 import React from 'react'
-import NavBar from '../Components/NavBar'
+import NavBar from '../../../Components/Navegacion/NavBar'
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { UsuariosContext } from '../Context/UsuariosContext';
+import { UsuariosContext } from '../../../Context/UsuariosContext';
 
 const UserManagement = () => {
 

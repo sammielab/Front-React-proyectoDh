@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import { useParams } from "react-router-dom"; // Importa useParams
-import { editUsers } from '../api/editUsers';
+import { editUsers } from '../../../api/editUsers';
 import { useNavigate } from 'react-router-dom';
 
 export const EditUser = () => {
