@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import useAuth from "../hooks/useAuth";
 import { findReservaByUser } from '../api/getReservasByUser';
 import { getUserByEmail } from '../api/getUserByEmail';
-import { Box, List, ListItem, ListItemText, ListItemIcon, Typography, CircularProgress, Card } from '@mui/material';
+import { Box, List, ListItem, ListItemText, ListItemIcon, Typography, CircularProgress, Card, Button, ListItemButton } from '@mui/material';
 import HotelIcon from '@mui/icons-material/Hotel'; // Un ícono representativo, por ejemplo.
 import {findProductById} from '../api/findProduct';
+import { useNavigate } from 'react-router-dom';
 
 export const ReservasComponent = () => {
 
+    const navigate = useNavigate()
     const [reservas, setReservas] = useState([]);
     const [error, setError] = useState();
     const {auth} = useAuth();
@@ -81,6 +83,11 @@ export const ReservasComponent = () => {
 
       console.log(reservasConProductos)
 
+
+      const handlePuntuar = (id) => {
+        navigate(`/puntuar/reserva/${id}`)
+      }
+
   return (
     <>
      <Box
@@ -123,6 +130,9 @@ export const ReservasComponent = () => {
                 <ListItemText
                     primary={`Producto: ${reserva.producto.titulo}`}
                 />
+                <ListItemButton
+                onClick={()=>handlePuntuar(reserva.producto.id)} 
+               >Puntuar</ListItemButton>
               </ListItem>
             ))}
           </List>

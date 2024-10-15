@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import NavBar from '../../Components/Navegacion/NavBar'
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { findProductById } from '../../api/findProduct';
 import { useParams } from "react-router-dom"; 
 import { useEffect } from 'react';
@@ -15,10 +11,12 @@ import useAuth from "../../hooks/useAuth";
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
+import { Card, CardContent, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star'; 
+import {getUserById} from '../../api/getUserById';
 
 
 export const VerProductoPage = () => {
-
     const {id} = useParams();
     const [product, setProduct] = useState();
     const token = localStorage.getItem('authToken')
@@ -31,7 +29,7 @@ export const VerProductoPage = () => {
         try{
             const data = await findProductById(id,token); 
             setProduct(data)
-            console.log(data)
+
         }catch(e){
             console.log(e)
         }
@@ -89,6 +87,34 @@ export const VerProductoPage = () => {
         }
     }
 
+
+    const findUserName = async() => {
+        try{
+
+            const recomendacionesConNombres = await Promise.all(
+                product.recomendaciones.map(async (recomendacion) => {
+                    const usuarioIdBuscado = recomendacion.usuario_id;
+                    const userData = await getUserById(token, usuarioIdBuscado);
+                    console.log(userData)
+                    recomendacion.usuarioNombre = userData.nombre; // Guardamos el nombre en la recomendación
+                    return recomendacion; // Retornamos la recomendación actualizada
+                })
+            );
+            product.recomendaciones = recomendacionesConNombres;
+            console.log(product)
+            return product; 
+        }catch(e){
+            console.error(e)
+        }
+    }
+
+    useEffect(() => {
+        findUserName(product); 
+    }, [product])
+
+    
+
+
   return (
     <>
     <NavBar></NavBar>
@@ -128,17 +154,58 @@ export const VerProductoPage = () => {
                             <FavButton id={product.id}></FavButton>
                         </CardActions>
 
-                        <Typography component="legend">Puntuar</Typography>
-                        <Rating
-                        name="simple-controlled"
-                        value={value}
-                        onChange={(event, newValue) => {
-                        setValue(newValue);
-                        }}
-                        />
+                       
                     </Box>
                 ) }
                 
+                <Card sx={{ marginTop: 2, padding: 2 }}>
+                    <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                        Recomendaciones de Usuarios
+                        </Typography>
+
+                        <List>
+                        {product.recomendaciones.map((recommendation, index) => (
+                            <React.Fragment key={index}>
+                            <ListItem alignItems="flex-start">
+                                <ListItemIcon>
+                                <StarIcon color="primary" />
+                                </ListItemIcon>
+                                <ListItemText
+                                primary={
+                                    <Box display="flex" justifyContent="space-between">
+                                    <Typography variant="body1" fontWeight="bold">
+                                        {recommendation.usuario_id}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        {new Date(recommendation.fecha_publicacion).toLocaleDateString()}
+                                    </Typography>
+                                    </Box>
+                                }
+                                secondary={
+                                    <>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Puntuación: {recommendation.puntaje_total} / 5
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ marginTop: 1 }}>
+                                        {recommendation.descripcion}
+                                    </Typography>
+                                    </>
+                                }
+                                />
+                            </ListItem>
+                            {index < product.recomendaciones.length - 1 && <Divider />}
+                            </React.Fragment>
+                        ))}
+                        </List>
+
+                        {product.recomendaciones.length === 0 && (
+                        <Typography variant="body2" color="textSecondary">
+                            No hay recomendaciones disponibles.
+                        </Typography>
+                        )}
+                    </CardContent>
+                    </Card>
             </CardContent>
         )}
       

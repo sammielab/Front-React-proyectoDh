@@ -34,6 +34,7 @@ import {ProductosFavoritos} from './Pages/usuario/ProductosFavoritos.jsx'
 import {ReservaPage} from './Pages/reservas/ReservaPage.jsx'
 import {ConfirmacionReservaPage} from './Pages/reservas/ConfirmacionReservaPage.jsx'
 import {ReservasUsuario} from './Pages/reservas/ReservasUsuario.jsx'
+import {PuntuarReserva} from './Pages/reservas/PuntuarReserva.jsx'
 
 const query = new QueryClient();
 
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
   {
     path: '/reservas/usuario', 
     element: <ReservasUsuario></ReservasUsuario>
+  },
+  {
+    path: '/puntuar/reserva/:id', 
+    element: <PuntuarReserva></PuntuarReserva>
   },
   {
     path: '/products/categoria/add/:id', 
