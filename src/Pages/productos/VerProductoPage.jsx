@@ -24,6 +24,7 @@ export const VerProductoPage = () => {
     const [value, setValue] = React.useState(2);
     const navigate = useNavigate();
     const [productFound, setProductFound] = useState(); 
+    const [puntuacionTotal, setPuntuacionTotal] = useState(0); 
 
 
     const getProducto = async() => {
@@ -93,15 +94,21 @@ export const VerProductoPage = () => {
     const findUserName = async() => {
         try{
 
+            let puntuacion = 0; 
             const recomendacionesConNombres = await Promise.all(
                 productFound.recomendaciones.map(async (recomendacion) => {
+                    const puntuacionRecomendacion = recomendacion.puntaje_total; 
+                    puntuacion = puntuacion + puntuacionRecomendacion
                     const usuarioIdBuscado = recomendacion.usuario_id;
                     const userData = await getUserById(token, usuarioIdBuscado);
                     console.log(userData)
                     recomendacion.usuarioNombre = userData.name; // Guardamos el nombre en la recomendación
                     return recomendacion; // Retornamos la recomendación actualizada
                 })
+
             );
+            setPuntuacionTotal((puntuacion ) / productFound.recomendaciones.length)
+
             productFound.recomendaciones = recomendacionesConNombres;
            
             return productFound; 
@@ -124,7 +131,7 @@ export const VerProductoPage = () => {
     }, [productFound])
 
 
-
+ 
 
   return (
     <>
@@ -176,6 +183,10 @@ export const VerProductoPage = () => {
                         <Typography variant="h6" gutterBottom>
                         Recomendaciones de Usuarios
                         </Typography>
+
+                        { !isNaN(puntuacionTotal) && puntuacionTotal && (
+                            <Typography  variant="h6"> Puntuacion total : {puntuacionTotal}</Typography>
+                        )}
 
                         <List>
                         {product.recomendaciones.map((recommendation, index) => (
