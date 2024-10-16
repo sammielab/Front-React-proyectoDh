@@ -23,12 +23,14 @@ export const VerProductoPage = () => {
     const { auth } = useAuth(); 
     const [value, setValue] = React.useState(2);
     const navigate = useNavigate();
+    const [productFound, setProductFound] = useState(); 
 
 
     const getProducto = async() => {
         try{
-            const data = await findProductById(id,token); 
-            setProduct(data)
+            const data = await findProductById(id,token)
+            setProductFound(data); 
+           
 
         }catch(e){
             console.log(e)
@@ -92,27 +94,36 @@ export const VerProductoPage = () => {
         try{
 
             const recomendacionesConNombres = await Promise.all(
-                product.recomendaciones.map(async (recomendacion) => {
+                productFound.recomendaciones.map(async (recomendacion) => {
                     const usuarioIdBuscado = recomendacion.usuario_id;
                     const userData = await getUserById(token, usuarioIdBuscado);
                     console.log(userData)
-                    recomendacion.usuarioNombre = userData.nombre; // Guardamos el nombre en la recomendación
+                    recomendacion.usuarioNombre = userData.name; // Guardamos el nombre en la recomendación
                     return recomendacion; // Retornamos la recomendación actualizada
                 })
             );
-            product.recomendaciones = recomendacionesConNombres;
-            console.log(product)
-            return product; 
+            productFound.recomendaciones = recomendacionesConNombres;
+           
+            return productFound; 
         }catch(e){
             console.error(e)
         }
     }
 
     useEffect(() => {
-        findUserName(product); 
-    }, [product])
 
-    
+        const puntuacionConUsuarioNombre = async () => {
+            if (productFound) {
+                const rta = await findUserName(); // Sin pasar productFound, ya que la función lo utiliza directamente
+                setProduct(rta);
+            }
+        }
+
+        puntuacionConUsuarioNombre();
+     
+    }, [productFound])
+
+
 
 
   return (
@@ -158,7 +169,9 @@ export const VerProductoPage = () => {
                     </Box>
                 ) }
                 
-                <Card sx={{ marginTop: 2, padding: 2 }}>
+             
+                   
+                    <Card sx={{ marginTop: 2, padding: 2 }}>
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
                         Recomendaciones de Usuarios
@@ -175,7 +188,7 @@ export const VerProductoPage = () => {
                                 primary={
                                     <Box display="flex" justifyContent="space-between">
                                     <Typography variant="body1" fontWeight="bold">
-                                        {recommendation.usuario_id}
+                                        {recommendation.usuarioNombre}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         {new Date(recommendation.fecha_publicacion).toLocaleDateString()}
@@ -206,6 +219,8 @@ export const VerProductoPage = () => {
                         )}
                     </CardContent>
                     </Card>
+                 
+              
             </CardContent>
         )}
       
