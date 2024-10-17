@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite'; 
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; 
-import useAuth from "../hooks/useAuth";
-import { getUserByEmail } from '../api/getUserByEmail';
-import { editUsers } from '../api/editUsers';
+import useAuth from "../../hooks/useAuth";
+import { getUserByEmail } from '../../api/getUserByEmail';
+import { editUsers } from '../../api/editUsers';
 
 const FavButton = ({id}) => {
   const [filled, setFilled] = useState(false); 
@@ -12,7 +12,6 @@ const FavButton = ({id}) => {
   const [userData, setUserData ] = useState();
 
   useEffect(() => {
-    console.log("hola")
     const fetch = async () => {
         const data = await getUserByEmail(auth.email, auth.token); 
         console.log(data)
@@ -29,12 +28,16 @@ const FavButton = ({id}) => {
 
     try{
        const usuario =  await getUser();
-        
+        console.log("obtengo el usuario luego del click")
+        console.log(usuario)
        if(usuario){
         
         const x = usuario.productosFavoritos.find(producto => producto.id === id)
         
         if(x == undefined){
+            console.log("llega al undefined")
+            console.log("El rol del usuario es ")
+            console.log(usuario.role)
             setUserData({
                 "id": usuario.id, 
                 "name":usuario.name,
@@ -77,8 +80,9 @@ const FavButton = ({id}) => {
     useEffect(() => {
         const updateFav = async () => {
             try{
+                
                 const update = await editUsers(auth.token, userData)
-                console.log(update)
+                
             }catch(e){
                 console.log(e)
             }

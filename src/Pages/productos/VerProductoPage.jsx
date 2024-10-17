@@ -6,7 +6,7 @@ import { findProductById } from '../../api/findProduct';
 import { useParams } from "react-router-dom"; 
 import { useEffect } from 'react';
 import { Accessible, Elevator, Favorite, FavoriteBorderRounded, FitnessCenter, Garage, Liquor, Pets, Pool, Restaurant, RoomService, SignalWifi3Bar, SmokeFree, Spa, Weekend, Yard } from '@mui/icons-material';
-import FavButton from '../../Components/FavButton'
+import FavButton from '../../Components/Productos/FavButton'
 import useAuth from "../../hooks/useAuth";
 import Rating from '@mui/material/Rating';
 import { useNavigate } from "react-router-dom";
@@ -189,6 +189,7 @@ export const VerProductoPage = () => {
                         )}
 
                         <List>
+                        <Typography> Total de valoraciones : {product.recomendaciones.length} </Typography>
                         {product.recomendaciones.map((recommendation, index) => (
                             <React.Fragment key={index}>
                             <ListItem alignItems="flex-start">
@@ -220,6 +221,7 @@ export const VerProductoPage = () => {
                             </ListItem>
                             {index < product.recomendaciones.length - 1 && <Divider />}
                             </React.Fragment>
+                        
                         ))}
                         </List>
 
