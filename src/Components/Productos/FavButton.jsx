@@ -39,13 +39,7 @@ const FavButton = ({id}) => {
             console.log("El rol del usuario es ")
             console.log(usuario.role)
             setUserData({
-                "id": usuario.id, 
-                "name":usuario.name,
-                "apellido": usuario.apellido,
-                "email": usuario.email, 
-                "password": usuario.password, 
-                "puntuaciones": usuario.puntuaciones, 
-                "role": usuario.role, 
+               ...usuario,
                 "productosFavoritos": [...usuario.productosFavoritos, {"id": id}]
             }); 
         }else{
@@ -54,13 +48,7 @@ const FavButton = ({id}) => {
              const updatedFavs = newFavs.length === 0 ? [] : newFavs;
             
             setUserData({
-                "id": usuario.id, 
-                "name":usuario.name,
-                "apellido": usuario.apellido,
-                "email": usuario.email, 
-                "password": usuario.password, 
-                "puntuaciones": usuario.puntuaciones, 
-                "role": usuario.role, 
+                ...usuario,
                 "productosFavoritos": updatedFavs
             }); 
         }
@@ -78,16 +66,21 @@ const FavButton = ({id}) => {
  
 
     useEffect(() => {
-        const updateFav = async () => {
-            try{
-                
-                const update = await editUsers(auth.token, userData)
-                
-            }catch(e){
-                console.log(e)
+
+        console.log(userData)
+        if(userData && userData.productosFavoritos){
+            const updateFav = async () => {
+                try{
+                    
+                    const update = await editUsers(auth.token, userData)
+                    console.log(update);
+                    
+                }catch(e){
+                    console.log(e)
+                }
             }
+            updateFav();
         }
-        updateFav();
     },[userData])
 
 

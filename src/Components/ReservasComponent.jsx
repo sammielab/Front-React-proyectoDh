@@ -56,6 +56,7 @@ export const ReservasComponent = () => {
 
       const fetchProducById = async (idToFind, token) => {
         try{
+          console.log(idToFind)
             const rta = await findProductById(idToFind, token); 
             return rta            
         }catch(e){
@@ -69,9 +70,9 @@ export const ReservasComponent = () => {
         const fetchAllProducts = async() => {
             const updateReserva = await Promise.all (
                 reservas.map(async (res) => {
-                    let idToFind = res.id; 
+                    let idToFind = res.id_producto; 
                     let productFound = await fetchProducById(idToFind, token); 
-
+                    console.log(productFound)
                     return {...res, producto:productFound}; 
                 })
             ); 
@@ -81,7 +82,7 @@ export const ReservasComponent = () => {
         fetchAllProducts();
       }, [reservas])
 
-      console.log(reservasConProductos)
+      
 
 
       const handlePuntuar = (id) => {

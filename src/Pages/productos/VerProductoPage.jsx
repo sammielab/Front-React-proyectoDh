@@ -14,7 +14,12 @@ import Alert from '@mui/material/Alert';
 import { Card, CardContent, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star'; 
 import {getUserById} from '../../api/getUserById';
-
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import moment from 'moment';
+import {findReservaByProducto} from '../../api/findReservaByProductoId';
+import { extendMoment } from 'moment-range';
 
 export const VerProductoPage = () => {
     const {id} = useParams();
@@ -25,6 +30,9 @@ export const VerProductoPage = () => {
     const navigate = useNavigate();
     const [productFound, setProductFound] = useState(); 
     const [puntuacionTotal, setPuntuacionTotal] = useState(0); 
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [reservas, setReservas] = useState([]); 
+    const [unavailableDays, setUnavailableDays] = useState(new Set());
 
 
     const getProducto = async() => {
@@ -99,9 +107,8 @@ export const VerProductoPage = () => {
                 productFound.recomendaciones.map(async (recomendacion) => {
                     const puntuacionRecomendacion = recomendacion.puntaje_total; 
                     puntuacion = puntuacion + puntuacionRecomendacion
-                    const usuarioIdBuscado = recomendacion.usuario_id;
+                    const usuarioIdBuscado = recomendacion.usuario.id;
                     const userData = await getUserById(token, usuarioIdBuscado);
-                    console.log(userData)
                     recomendacion.usuarioNombre = userData.name; // Guardamos el nombre en la recomendación
                     return recomendacion; // Retornamos la recomendación actualizada
                 })
@@ -118,6 +125,52 @@ export const VerProductoPage = () => {
     }
 
     useEffect(() => {
+        const findDisponibilidad = async () => {
+            try{
+                const data = await findReservaByProducto(id, token); 
+                console.log(data)
+
+                if(data){
+                    const reservasConMoment = data.map(reserva => ({
+                        check_in: moment(reserva.check_in).format('YYYY-MM-DD'),
+                        check_out: moment(reserva.check_out).format('YYYY-MM-DD')
+                    }));
+
+                    setReservas(reservasConMoment);
+
+                    const daysSet = new Set();
+                    reservasConMoment.forEach(reserva => {
+                        const start = moment(reserva.check_in);
+                        const end = moment(reserva.check_out);
+                        
+                        while (start.isBefore(end) || start.isSame(end)) {
+                            daysSet.add(start.format('YYYY-MM-DD'));
+                            start.add(1, 'days'); // Incrementar en un día
+                        }
+                    });
+
+                    setUnavailableDays(daysSet);
+                    setReservas(reservasConMoment);
+
+                }
+               
+            }catch(e){
+                console.log(e.message)
+            }
+        }
+        findDisponibilidad();
+    }, [id, token])
+  
+
+
+    const isDateUnavailable = (date) => {
+        console.log(date)
+        return unavailableDays.has(date.format('YYYY-MM-DD'));
+    };
+ 
+   
+
+    useEffect(() => {
 
         const puntuacionConUsuarioNombre = async () => {
             if (productFound) {
@@ -131,6 +184,7 @@ export const VerProductoPage = () => {
     }, [productFound])
 
 
+  
  
 
   return (
@@ -163,7 +217,28 @@ export const VerProductoPage = () => {
                       {getIconByCaracteristic(caracteristica.nombre)}   {caracteristica.nombre}
                     </Typography>
                 ))}
-
+   
+   <LocalizationProvider dateAdapter={AdapterMoment}>
+            <StaticDatePicker
+                displayStaticWrapperAs="desktop"
+                value={null} // Sin valor, solo lectura
+                onChange={() => {}} // No hace nada al cambiar
+                renderDay={(day, _value, DayComponent) => {
+                    const isUnavailable = isDateUnavailable(day);
+                    return (
+                        <DayComponent
+                            sx={{
+                                backgroundColor: isUnavailable ? 'rgba(169, 169, 169, 0.5)' : 'inherit',
+                                pointerEvents: isUnavailable ? 'none' : 'auto', // Deshabilitar interacción
+                            }}
+                        >
+                            {day.date()}
+                        </DayComponent>
+                    );
+                }}
+            />
+        
+        </LocalizationProvider>
                 <Button onClick={handleReserva}>Reservar</Button>
 
                 {auth && auth.token && (
