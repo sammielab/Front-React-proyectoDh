@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import { FormGroup } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import { useLocation } from 'react-router-dom';
+import {authLogin} from '../../api/authLogin';
+import {getUserByEmail} from '../../api/getUserByEmail'
 
 export const Login = () => {
   const {setAuth} = useAuth();  
@@ -13,7 +15,12 @@ export const Login = () => {
   const location = useLocation();
   let from = location.state?.from || '/'
   const navigate = useNavigate();
-  const match = from.match(/^\/productos\/(\d+)$/);
+ console.log(location)
+ console.log(from)
+  const match = from?.pathname?.match(/^\/productos\/(\d+)$/);
+  const [errMsg, setErrMsg] = useState('')
+  const [success, setsuccess] = useState()
+  const [token, setToken] = useState();
 
   const [userData, setUserData] = useState({
     email: '', 
@@ -37,31 +44,102 @@ export const Login = () => {
     }, 
 
 });
-  const [errMsg, setErrMsg] = useState('')
-  const [success, setsuccess] = useState(true)
+
 
   useEffect(() => {
     setErrMsg('')
   }, [userData.email, userData.password])
 
 
+  //Fetch para el auth una vez que el success haya cambiado
   useEffect(() => {
-    // if (success) {
-    //   navigate('/');
-    // }
-  }, [success, navigate]);
 
-  const handleChange = (e) =>{
-    setUserData({
-      ...userData,
-      [e.target.name] : e.target.value
-    })
+   if(success){
+    const fetch = async(userData) =>{
+        try {
+            const data = await authLogin(userData); 
+            if(data){
+
+              setTimeout(() => {
+                    setShowAlert({
+                        "msg": '',
+                        "status": false
+                    });
+                   }, 3000);
+
+                   setToken(data.token); 
+                   localStorage.setItem('authToken', token);
+
+            }else{
+              setTimeout(() => {
+                setShowAlert({
+                  "msg": 'Login Inválido',
+                  "status": true, 
+                })  
+              },3000);
+            }
+           
+        } catch(e){
+            console.log(e.message); 
+             setShowAlert({
+                "msg": e.message,
+                "status": true, 
+              }) 
+        } 
+      }
+      fetch(userData);
+    }
+  }, [success]);
+
+
+  //Cuando el token se haya setteado
+  useEffect(() => {
+
+    if(userData){
+    const fetchEmail = async() => {
+      
+      try {
+        const data = await getUserByEmail(userData.email, token); 
+        if(data){
+          data.token = token; 
+          setAuth(data);
+          if(match){
+            navigate(from);
+           }else{
+            navigate('/')
+          }
+        }
+
+
+        setTimeout(() => {
+          setShowAlert({
+              "msg": '',
+              "status": false
+          });
+         }, 3000);
+        
+      }catch(e){
+        setErrMsg('Error')
+
+        setShowAlert({
+          "msg":e.message, 
+          "status":true
+        })
+      }
+    } 
+    fetchEmail();
   }
 
+  }, [token])
+
+
+
+  //Funcion de submit
   const handleSubmit = async (e) => {
     e.preventDefault(); 
 
-
+    console.log("LLega al submit")
+    //Validaciones
     if(userData.email == '' || !userData.email.match(new RegExp("^[a-zA-Z0-9_.-]{1,}[@]{1}[a-zA-Z]{1,}[\.]{1}[a-zA-Z]{2,4}([\.]{1}[a-zA-Z]{2,4})?$","gi"))){
       setsuccess(false);
       setError(prev => ({
@@ -73,6 +151,7 @@ export const Login = () => {
     })) 
 
     }
+
     if(userData.password == '' || userData.password.length < 6){
       setsuccess(false);
       setError(prev => ({
@@ -84,199 +163,13 @@ export const Login = () => {
     })) 
     }
 
-    if(success){
-      const fetchProducts = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    withCredentials:true,
-                },
-                body: JSON.stringify(userData)
-            });
-
-            console.log(response)
-
-            if (!response.ok) {
-              setShowAlert({
-                "msg": 'Login Inválido',
-                "status": true, 
-              })  
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-              throw new Error("Not ok");
-
-            }
-    
-            const data = await response.json(); // Espera a que se resuelva la promesa
-            console.log(data)
-           
-            const token = data.token; 
-            localStorage.setItem('authToken', token);
-  
-            if (token) {
-              const email = userData.email
-  
-              try {
-                const response = await fetch(`http://localhost:8080/usuarios/findByEmail?email=${encodeURIComponent(email)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        withCredentials:true,
-                    },
-                });
-
-                console.log(response)
-                if (!response.ok) {
-                    throw new Error("Not ok");
-                }
-        
-                const data = await response.json(); 
-                console.log(data)
-
-                setAuth({
-                  email: data.email,
-                  password: data.password,
-                  token: token, 
-                  name: data.name, 
-                  apellido:data.apellido, 
-                  role: data.role, 
-                  productos_favoritos: data.productosFavoritos,
-                  puntuaciones: data.puntuaciones
-              })
-
-              if(match){
-                navigate(from)
-              }else{
-                navigate('/')
-              }
-                
-              }catch(e){
-                setErrMsg('Error')
-
-                setShowAlert({
-                  "msg":e.message, 
-                  "status":true
-                })
-
-                setTimeout(() => {
-                  setShowAlert({
-                      "msg": '',
-                      "status": false
-                  });
-                 }, 3000);
-              }
-            
-            } else {
-              setErrMsg('Token no encontrado');
-              setShowAlert({
-                "msg": 'Token no encontrado', 
-                "status":true
-              })
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }
-        
-           
-          } catch (err) {
-
-
-            console.log(err)
-            if(err == true){
-              setShowAlert({
-                "msg": 'Login Inválido',
-                "status": true, 
-              })  
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }
-
-            if(!err?.response){
-              
-              setErrMsg('No server response'); 
-              setShowAlert({
-                "msg": 'No responde el servidor', 
-                "status":true
-              })
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }else if(err.response?.status === 400){
-              setErrMsg('Missing info')
-              setShowAlert({
-                "msg": 'Falta informacion', 
-                "status":true
-              })
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }else if(err.response?.status ===401){
-              setErrMsg('Unauthorized') 
-              setShowAlert({
-                "msg": 'No autorizado', 
-                "status":true
-              })
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }else{
-              setErrMsg('Login Failed')
-
-              setShowAlert({
-                "msg": 'Login Fallo', 
-                "status":true
-              })
-
-              setTimeout(() => {
-                setShowAlert({
-                    "msg": '',
-                    "status": false
-                });
-               }, 3000);
-            }
-          }
+    if(success != false){
+      setsuccess(true)
+    } 
         
     };
 
-    await fetchProducts(); 
-    }
-  
-  
 
- 
-  
-    //Hacer Validaciones 
-
-  }
   return (
     <section>
       {showAlert.status === true && (
@@ -304,7 +197,10 @@ export const Login = () => {
           label="Ingrese su mail"
           name='email'
           value={userData.email}
-          onChange={handleChange}
+          onChange={(e) => setUserData({
+            ...userData,
+            email: e.target.value
+          })}
           variant="filled"
           error={error.mail.status}
           helperText={error.mail.msg}
@@ -319,7 +215,10 @@ export const Login = () => {
           label="Ingrese su contraseña"
           name='password'
           value={userData.password}
-          onChange={handleChange}
+          onChange={(e)=>setUserData({
+            ...userData,
+            password: e.target.value
+          })}
           variant="filled"
           error={error.password.status}
           helperText={error.password.msg}
@@ -333,5 +232,6 @@ export const Login = () => {
     </section>
   )
 }
+
 
 

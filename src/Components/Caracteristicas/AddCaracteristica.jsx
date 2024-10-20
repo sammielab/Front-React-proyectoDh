@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {findProductById} from '../../api/findProduct';
 import {saveCaracteristicas} from '../../api/createCaracteristica';
+import useAuth from '../../hooks/useAuth';
+import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material';
 
 export const AddCaracteristica = () => {
 
     const [nombre, setNombre] = useState('');
     const [userData, setUserdata] = useState('');
-    const token = localStorage.getItem('authToken')
+    const {auth} = useAuth();
+    const token = auth.token
     const [error, setError] = useState('');
 
     const handleSubmit = async(e) => {
@@ -25,19 +28,43 @@ export const AddCaracteristica = () => {
             nombre:nombre
         })
 
-        if(error==''){
-            const data = await saveCaracteristicas(token, userData);
-        }
-
-
-        // Limpiar el campo
-        setNombre('');
+      
     };
 
+
+    useEffect(() => {
+        if(error == ''){
+            const fetch = async()=>{
+                try{
+                     const data = await saveCaracteristicas(token, userData);
+                    if(data){
+                        setNombre('');
+                    }
+                }catch(e){
+                    console.log(e.message)
+                }
+            }
+
+            fetch();
+        }
+    }, [userData, error])
 return (
-    <div className="container mt-5">
+
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '25px', marginTop:'6rem' }}>
+        <Card   
+            sx={{
+            width: { xs: '90%', sm: '80%', md: '70%', lg: '60%' },
+            maxWidth: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center', 
+            alignContent:'center',
+            textCenter: 'center', 
+            alignItems: 'center',
+            padding: '2rem'}}
+        >
         <h2>Agregar Nombre</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
             <div className="mb-3">
                 <label htmlFor="nombre" className="form-label">Nombre</label>
                 <input
@@ -49,9 +76,10 @@ return (
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
-            <button type="submit" className="btn btn-primary">Enviar</button>
+            <Button sx={{backgroundColor: '#222D52', width:'100%', color:'#E8E4E0'}} type="submit" className="btn btn-primary">Guardar</Button>
         </form>
-    </div>
+      </Card>
+    </Box>
 );
 };
 

@@ -1,5 +1,5 @@
 import {Recomendaciones} from '../Components/Recomendaciones'
-import {Buscador} from '../Components/Buscador'
+import {Buscador} from '../Components/Navegacion/Buscador'
 import { ProductosPage } from './productos/ProductosPage'
 import {Footer} from '../Components/Navegacion/Footer'
 

@@ -59,8 +59,8 @@ const EditCategoriasPage = () => {
                         type="text"
                         className={`form-control ${error ? 'is-invalid' : ''}`}
                         id="titulo"
-                        value={titulo} // Valor del estado `titulo`
-                        onChange={(e) => setTitulo(e.target.value)} // Actualizar el estado `titulo`
+                        value={titulo} 
+                        onChange={(e) => setTitulo(e.target.value)}
                     />
                     {error && <div className="invalid-feedback">{error}</div>}
                 </div>

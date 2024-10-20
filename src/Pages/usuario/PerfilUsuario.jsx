@@ -124,6 +124,13 @@ export const PerfilUsuario = () => {
                             "status": true
                         });
                     }, 3000);
+
+                    console.log(data)
+                    if(data){
+                        console.log(data)
+                        data.token = token; 
+                        setAuth(data)
+                    }
                     
                 }catch(e){
                 
@@ -226,6 +233,12 @@ export const PerfilUsuario = () => {
                     "status": true
                 });
             }, 3000);
+
+            console.log(data)
+            if(data){
+                data.token = token
+                setAuth(data);
+            }
               }catch(e){
                   setShowAlert({
                       "msg": e.message, 

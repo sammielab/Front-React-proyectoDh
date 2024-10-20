@@ -17,20 +17,20 @@ export const ProductsManagement = () => {
   const queryClient = useQueryClient(); 
 
   const { auth } = useAuth(); 
+  const token = auth.token;
 
   const handleEliminar = async (id) => {
-      const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjJAbWFpbC5jb20iLCJpYXQiOjE3Mjc2MzEyOTAsImV4cCI6MTcyOTEwMjUxOX0.rtkPsZ9nin3XDp2wFSWwEolHiG09LrQRa0VD-60T7Go'
+
       try {
           await deleteProduct(id, token);
           queryClient.invalidateQueries('products'); 
-          // Aquí podrías volver a hacer el fetch o invalidar la consulta
-          // Si usas React Query, puedes invalidar la consulta
+         
       } catch (error) {
           console.error('Error eliminando el producto:', error);
       }
   }
 
-  if (error) return <div>Error: {error.message}</div>; // Manejo de errores
+  if (error) return <div>Error: {error.message}</div>; 
 
 
   const handleAgregarProductos = () =>{

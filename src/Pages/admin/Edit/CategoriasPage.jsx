@@ -3,29 +3,24 @@ import NavBar from '../../../Components/Navegacion/NavBar'
 import { useNavigate } from 'react-router-dom'
 import {deleteCategoria} from '../../../api/deleteCategoria'
 import { getCategorias } from '../../../api/getCategorias';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import Typography from '@mui/material/Typography';
 import { PriorityHigh } from '@mui/icons-material';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material';
+import useAuth from '../../../hooks/useAuth';
 
 
 export const CategoriasPage = () => {
 
     const navigate = useNavigate();
-    const token = localStorage.getItem('authToken');
+    const {auth} = useAuth();
+    const token = auth.token
     const [categorias, setCategorias] = useState([]);
+   
 
     const fetchCategorias = async() => {
         try{
@@ -81,11 +76,19 @@ export const CategoriasPage = () => {
     }
 
 
+    const handleDelete = async(id) => {
+      try{
+        await deleteCategoria(token, id);
+      setCategorias(categorias.filter((categoria) => categoria.id !== id));
+      setIdEliminar(null);
+      }catch(e){
+        console.log(e.message)
+      }
+    }
 
     const handleEditar = (id) => {
         navigate(`/categorias/edit/${id}`)
     }
- 
 
     const handleAdd = () => {
         navigate('/categorias/add');
@@ -136,9 +139,9 @@ export const CategoriasPage = () => {
                     <tr>
                     <td>{c.id}</td>
                     <td>{c.titulo}</td>
-                    <td><button onClick={()=>handleClickOpen(c.id, c.titulo)} >Eliminar</button>
-                    <button onClick={()=>handleEditar(c.id)} >Editar</button>
-                    
+                    <td>
+                    <Button onClick={()=>handleEditar(c.id)} >Editar</Button>
+                    <Button onClick={() =>handleDelete(c.id)}>Eliminar</Button>
                     </td>
                     </tr>
                 )}

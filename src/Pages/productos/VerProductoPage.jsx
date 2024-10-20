@@ -14,12 +14,14 @@ import Alert from '@mui/material/Alert';
 import { Card, CardContent, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star'; 
 import {getUserById} from '../../api/getUserById';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import {findReservaByProducto} from '../../api/findReservaByProductoId';
 import { extendMoment } from 'moment-range';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { CustomDay } from '../../Components/CustomDay';
+
 
 export const VerProductoPage = () => {
     const {id} = useParams();
@@ -132,24 +134,21 @@ export const VerProductoPage = () => {
 
                 if(data){
                     const reservasConMoment = data.map(reserva => ({
-                        check_in: moment(reserva.check_in).format('YYYY-MM-DD'),
-                        check_out: moment(reserva.check_out).format('YYYY-MM-DD')
+                        check_in: moment(reserva.check_in),
+                        check_out: moment(reserva.check_out)
                     }));
 
-                    setReservas(reservasConMoment);
-
-                    const daysSet = new Set();
+                    const daysObj = {};
                     reservasConMoment.forEach(reserva => {
                         const start = moment(reserva.check_in);
                         const end = moment(reserva.check_out);
-                        
                         while (start.isBefore(end) || start.isSame(end)) {
-                            daysSet.add(start.format('YYYY-MM-DD'));
-                            start.add(1, 'days'); // Incrementar en un día
+                            daysObj[start] = true; // Marcar la fecha como no disponible
+                            start.add(1, 'days');
                         }
                     });
-
-                    setUnavailableDays(daysSet);
+                    console.log(daysObj)
+                    setUnavailableDays(daysObj);
                     setReservas(reservasConMoment);
 
                 }
@@ -168,7 +167,7 @@ export const VerProductoPage = () => {
         return unavailableDays.has(date.format('YYYY-MM-DD'));
     };
  
-   
+
 
     useEffect(() => {
 
@@ -219,26 +218,13 @@ export const VerProductoPage = () => {
                 ))}
    
    <LocalizationProvider dateAdapter={AdapterMoment}>
-            <StaticDatePicker
-                displayStaticWrapperAs="desktop"
-                value={null} // Sin valor, solo lectura
-                onChange={() => {}} // No hace nada al cambiar
-                renderDay={(day, _value, DayComponent) => {
-                    const isUnavailable = isDateUnavailable(day);
-                    return (
-                        <DayComponent
-                            sx={{
-                                backgroundColor: isUnavailable ? 'rgba(169, 169, 169, 0.5)' : 'inherit',
-                                pointerEvents: isUnavailable ? 'none' : 'auto', // Deshabilitar interacción
-                            }}
-                        >
-                            {day.date()}
-                        </DayComponent>
-                    );
-                }}
-            />
-        
+        <DateCalendar showDaysOutsideCurrentMonth 
+          slots={{
+            day: (dayProps) => <CustomDay {...dayProps} unavailableDays={unavailableDays} />,
+            }}
+          />
         </LocalizationProvider>
+
                 <Button onClick={handleReserva}>Reservar</Button>
 
                 {auth && auth.token && (

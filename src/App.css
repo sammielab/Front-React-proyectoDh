@@ -5,6 +5,7 @@
   
 }
 
-.unavailable {
-  background-color: darkgray; /* Cambia esto por el color que prefieras */
+.unavailable-day {
+  background-color: rgba(169, 169, 169, 0.5); /* Color de fondo gris */
+  pointer-events: none; /* Deshabilitar interacción */
 }

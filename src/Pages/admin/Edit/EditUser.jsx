@@ -1,12 +1,14 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState, useContext } from 'react'
 import { useParams } from "react-router-dom"; // Importa useParams
 import { editUsers } from '../../../api/editUsers';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
 
 export const EditUser = () => {
 
+    const {auth, setAuth} = useAuth();
     const { id } = useParams();
-    let token = localStorage.getItem('authToken')
+    let token = auth.token
     let navigate = useNavigate();
 
     const [usuario, setUsuario] = useState({
@@ -45,11 +47,22 @@ useEffect(() => {
             });
             console.log(response)
             if (!response.ok) {
+              const text = await response.text();
+              let data; 
+      
+              if(text){
+                  data = JSON.parse(text)
+              }else{
+                  throw new Error(text)
+              }
+
                 throw new Error("Not ok");
+
             }
+
     
-            const data = await response.json(); // Espera a que se resuelva la promesa
-            console.log(data); // Verifica los datos recibidos
+            const data = await response.json();
+            console.log(data); 
             setUsuario(data)
     
         } catch (e) {
@@ -87,6 +100,7 @@ const handleSubmit = async(e,usuario) =>{
     if(success == true){
 
         setUsuarioFormateado({
+          ...usuario,
             id: usuario.id,
             name: usuario.name,
             apellido: usuario.apellido,
@@ -96,16 +110,33 @@ const handleSubmit = async(e,usuario) =>{
         })
 
 
-        try{
-            await editUsers(token, usuarioFormateado)
-
-        }catch(e){
-            console.log(e)
-        }
-        // navigate('/usuarios')
+     
 
     }
 }
+
+  useEffect(() => {
+    console.log("llega")
+    console.log(usuarioFormateado)
+        const fetchUser = async() => {
+          try{
+            const data =  await editUsers(token, usuarioFormateado)
+            
+            if(data != undefined){
+              setAuth(() => ({
+                 data, 
+              }));
+              navigate('/')
+            }
+          }catch(e){
+              console.log(e)
+          }
+        }
+       
+      
+
+      fetchUser()
+  },[usuarioFormateado])
 
   return (
     <div>

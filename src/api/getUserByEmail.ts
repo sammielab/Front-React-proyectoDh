@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 
 export const getUserByEmail = async (email, token) => {
+    console.log(email)
+    console.log(token)
     try{                    
         const response = await fetch(`http://localhost:8080/usuarios/findByEmail?email=${email}`, {
             method: 'GET',
@@ -15,7 +17,17 @@ export const getUserByEmail = async (email, token) => {
 
         console.log(response)
         if (!response.ok) {
-            throw new Error("Not ok");
+            const text = await response.text();
+            console.log(text)
+            let data; 
+    
+            if(text){
+                data = JSON.parse(text)
+            }else{
+                throw new Error(text)
+            }
+
+              throw new Error("Not ok");
         }else{
             
             try{

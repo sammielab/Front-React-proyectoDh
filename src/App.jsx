@@ -13,6 +13,7 @@ import { Footer } from './Components/Navegacion/Footer'
 import RequireAuth from './Components/RequireAuth'
 import { AuthProvider } from './Context/AuthProvider'
 import {Home} from './Components/Home'
+import { Buscador } from './Components/Navegacion/Buscador'
 
 
 export const App = () => {
@@ -20,9 +21,8 @@ export const App = () => {
   return (
     <ProductosProvider>
     <NavBar></NavBar>
-    {/* <Buscador></Buscador> */}
-    <Home></Home>
-    {/* <Recomendaciones></Recomendaciones> */}
+      <Buscador></Buscador>
+      <Home></Home>
     <Footer></Footer>
   </ProductosProvider>
   )

@@ -45,24 +45,29 @@ export const Home = () => {
   
     return (
     <>
-    <Box sx={{width: '100%', display: 'flex', justifyContent:'center', justifyItems: 'center', alignItems: 'center'}}>
-    {randomProducts ? (
-        <Grid container spacing={2} justifyContent="center">
-        {randomProducts.map((product) => (
-             <Grid item xs={12} sm={6} md={4} >
-            <Card sx={{width: '100%'}}>
-                 <CardContent>
-                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                        {product.id}
-                        </Typography>
-                    </CardContent>
-            </Card>
-            </Grid>
-        ))}
-        </Grid>
-    ):(
-        <p>No hay productos</p>
-    )}
+    <Box sx={{width: '100%', display: 'flex', justifyContent:'center', justifyItems: 'center', alignItems: 'center'}} >
+      <Box sx={{width: '80%', display: 'flex', justifyContent:'center', justifyItems: 'center', alignItems: 'center', marginTop: '2rem'}}>
+      {randomProducts ? (
+          <Grid container spacing={2} justifyContent="center">
+          {randomProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={4} >
+              <Card sx={{width: '100%'}}>
+                  <CardContent>
+                          <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                          {product.titulo}
+                          </Typography>
+                          <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                          {product.descripcion}
+                          </Typography>
+                      </CardContent>
+              </Card>
+              </Grid>
+          ))}
+          </Grid>
+      ):(
+          <p>No hay productos</p>
+      )}
+      </Box>
     </Box>
     </>
   )

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {findProductById} from '../../api/findProduct';
 import {saveCategoria} from '../../api/saveCategoria';
+import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material';
 
 export const CategoriasAddItem = () => {
 
@@ -25,16 +26,40 @@ export const CategoriasAddItem = () => {
             titulo:categoria
         })
 
-        if(error==''){
-            const data = await saveCategoria(token, userData);
-        }
-
-        // Limpiar el campo
-        setCategoria('');
+ 
+       
     };
 
+    useEffect(() => {
+    
+            if(error==''){
+                const fetch = async () => {
+                    try{
+                        const data = await saveCategoria(token, userData);
+                        setCategoria('');
+                    }catch(e){
+                        console.log(e.message)
+                    }
+                }
+                fetch();
+            }
+        
+    }, [userData,error])
+
 return (
-    <div className="container mt-5">
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '25px', marginTop:'6rem' }}>
+    <Card   
+        sx={{
+        width: { xs: '90%', sm: '80%', md: '70%', lg: '60%' },
+        maxWidth: '600px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center', 
+        alignContent:'center',
+        textCenter: 'center', 
+        alignItems: 'center',
+        padding: '2rem'}}
+    >
         <h2>Agregar Categoria</h2>
         <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -48,9 +73,10 @@ return (
                 />
                 {error && <div className="invalid-feedback">{error}</div>}
             </div>
-            <button type="submit" className="btn btn-primary">Enviar</button>
+            <Button sx={{backgroundColor: '#222D52', width:'100%', color:'#E8E4E0'}} type="submit" className="btn btn-primary">Enviar</Button>
         </form>
-    </div>
+   </Card>
+   </Box>
 );
 };
 

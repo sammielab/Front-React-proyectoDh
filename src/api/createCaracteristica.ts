@@ -9,7 +9,7 @@ export const saveCaracteristicas = async ( token, userData) => {
         const response = await fetch('http://localhost:8080/caracteristicas/save', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
                 
             },
