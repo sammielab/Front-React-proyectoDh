@@ -24,11 +24,11 @@ const MenuAdmin = () => {
   return (
     <>
     <div className='text-center mt-4'>
-        <h3>Menu Administrador</h3>
+        <h3 className='light-color'>Menu Administrador</h3>
         <table className="table">
             <tbody>
                 <tr>
-                    <td><button onClick={handleUsers} className='col-lg-12'>Usuarioss</button></td>
+                    <td><button onClick={handleUsers} className='col-lg-12'>Usuarios</button></td>
                     <td><button  onClick={handleProducts} className='col-lg-12'>Productos</button></td>
                     <td><button  onClick={handleCaracteristicas} className='col-lg-12'>Caracteristicas</button></td>
                     <td><button  onClick={handleCategorias} className='col-lg-12'>Categorias</button></td>

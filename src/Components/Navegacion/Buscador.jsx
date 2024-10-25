@@ -18,7 +18,7 @@ export const Buscador = () => {
   const [suggestions, setSuggestions] = useState([
   ]);
   const {auth} = useAuth();
-  const token = auth.token; 
+  const token = auth?.token; 
 
   const handleLocationChange = (event, newValue) => {
     setLocation(newValue);
@@ -28,15 +28,11 @@ export const Buscador = () => {
     setInputValue(newInputValue);
   };
 
-    const handleSearch = () => {
-        console.log('Location:', location);
-        console.log('Date Range:', dateRange);
-    };
+
 
    
     useEffect(() => {
-      console.log("llega")
-      console.log(location)
+     
       if (location.length > 0) {
         const fetchSuggestions = async () => {
           const response = await fetchCityPattern(token, location);
@@ -62,6 +58,7 @@ export const Buscador = () => {
           padding: '16px',
           borderRadius: '8px',
           display: 'flex',
+          justifyContent: 'space-between',
           flexDirection: 'column',
           gap: 2,
           boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
@@ -96,12 +93,13 @@ export const Buscador = () => {
             borderRadius: '8px',
             flex: 1,
             flexBasis: '70%',
-            minWidth: '500px', 
+            minWidth: '300px', 
+            width: {sm: '100%', s: '100%', l: '30%'}
           }}
         />
       )}
     />
-  <Box sx={{ display: 'flex', gap: 1, flex: 1, flexBasis: '30%', width: {sm: '100%', s: '100%', l: '30%'} }}>
+  <Box sx={{ display: 'flex', gap: 1, flex: 1, flexBasis: '30%', width: {sm: '100%', s: '100%', l: '30%'}, justifyContent: 'space-around' }}>
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <DatePicker
         label="CheckIn"
@@ -145,7 +143,7 @@ export const Buscador = () => {
       />
     </LocalizationProvider>
   </Box>
-</Box>
+      </Box>
         <Button
           variant="contained"
           sx={{

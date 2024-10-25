@@ -7,6 +7,7 @@ export const HomePage = () => {
   return (
       <>
       <Buscador></Buscador>
+      <CategoriasAMostrar></CategoriasAMostrar>
       <Recomendaciones></Recomendaciones>
       <Footer></Footer>
       {/* <ProductosPage></ProductosPage> */}

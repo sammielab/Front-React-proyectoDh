@@ -21,13 +21,16 @@ import {findReservaByProducto} from '../../api/findReservaByProductoId';
 import { extendMoment } from 'moment-range';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { CustomDay } from '../../Components/CustomDay';
+import {ProductIMG} from '../../Components/Productos/ProductIMG';
+import { Footer } from '../../Components/Navegacion/Footer';
+import { BloqueProductoPoliticas } from './BloqueProductoPoliticas';
 
 
 export const VerProductoPage = () => {
     const {id} = useParams();
     const [product, setProduct] = useState();
-    const token = localStorage.getItem('authToken')
     const { auth } = useAuth(); 
+    const token = auth?.token
     const [value, setValue] = React.useState(2);
     const navigate = useNavigate();
     const [productFound, setProductFound] = useState(); 
@@ -216,7 +219,13 @@ export const VerProductoPage = () => {
                       {getIconByCaracteristic(caracteristica.nombre)}   {caracteristica.nombre}
                     </Typography>
                 ))}
+
+            <ProductIMG
+            imgdtos={product.imgdtos}
+            idProducto={id}
+            ></ProductIMG>
    
+   {/* Calendar  */}
    <LocalizationProvider dateAdapter={AdapterMoment}>
         <DateCalendar showDaysOutsideCurrentMonth 
           slots={{
@@ -293,13 +302,16 @@ export const VerProductoPage = () => {
                         )}
                     </CardContent>
                     </Card>
-                 
+                
               
             </CardContent>
         )}
-      
+       <BloqueProductoPoliticas
+                 politicas={product.politicas}
+                 ></BloqueProductoPoliticas>
         </Card>
     </Box>
+    <Footer></Footer>
     </>
   )
 }

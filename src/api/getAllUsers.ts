@@ -14,6 +14,7 @@ export const getUsers = async (token) => {
             },
         });
 
+        console.log(response)
         if (!response.ok) {
             throw new Error("Not ok");
         }else{

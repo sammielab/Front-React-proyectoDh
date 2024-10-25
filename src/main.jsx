@@ -35,6 +35,7 @@ import {ReservaPage} from './Pages/reservas/ReservaPage.jsx'
 import {ConfirmacionReservaPage} from './Pages/reservas/ConfirmacionReservaPage.jsx'
 import {ReservasUsuario} from './Pages/reservas/ReservasUsuario.jsx'
 import {PuntuarReserva} from './Pages/reservas/PuntuarReserva.jsx'
+import {ProductGallery} from './Pages/productos/ProductGallery.jsx';
 
 const query = new QueryClient();
 
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
   {
     path:'/productos/:id', 
     element: <VerProductoPage></VerProductoPage>
+  },
+  {
+    path:'/product/gallery/:id', 
+    element: <ProductGallery></ProductGallery>
   },
   {
     path:'/productos/:id/reserva', 

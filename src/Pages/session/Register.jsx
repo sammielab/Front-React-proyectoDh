@@ -3,7 +3,7 @@ import {useRef, useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { FormControl } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material';
 import { FormGroup } from '@mui/material';
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/; // Ejemplo de regex para nombre de usuario
@@ -11,7 +11,7 @@ const PWD_REGEX = /^[a-zA-Z0-9!@#$%^&*]{6,24}$/;
 const REGISTER_URL = '/register'
 
 export const Register = () => {
-    
+    const navigate = useNavigate()
     const userRef = useRef(); 
     const lastNameRef = useRef();
     const pass = useRef();
@@ -63,6 +63,8 @@ export const Register = () => {
     const [errMsg, setErrMsg] = useState(''); 
     const [success, setSuccess] = useState(false); 
 
+    const [userData, setUserData] = useState();
+
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -97,16 +99,12 @@ export const Register = () => {
     const handleSubmit = async (e) =>{
         e.preventDefault(); 
         
-        const userData = {
-            name: userRef.current.value, 
-            apellido: lastNameRef.current.value, 
-            password: pass.current.value, 
-            email: useremail.current.value,
-        }
+      
 
+        let hasError = false; 
 
-        if(userData.name == undefined || userData.name == '' || userData.name.length < 3){
-            setSuccess(false)
+        if(user == undefined || user == '' || user.length < 3){
+            hasError = true; 
             setError(prev => ({
                 ...prev,
                 "name":{
@@ -123,8 +121,8 @@ export const Register = () => {
                 }
             }))
         }
-        if(userData.apellido == undefined || userData.apellido == '' || userData.apellido.length<3){
-            setSuccess(false)
+        if(lastname == undefined || lastname == '' || lastname.length<3){
+            hasError = true
             setError(prev => ({
                 ...prev,
                 "apellido":{
@@ -142,9 +140,9 @@ export const Register = () => {
             }))
         }
 
-        if(userData.email == undefined || userData.email == '' || !userData.email.match(new RegExp("^[a-zA-Z0-9_.-]{1,}[@]{1}[a-zA-Z]{1,}[\.]{1}[a-zA-Z]{2,4}([\.]{1}[a-zA-Z]{2,4})?$"))){
-            setSuccess(false)
-            setError(prev => ({
+        if( email == undefined ||  email == '' || !email.match(new RegExp("^[a-zA-Z0-9_.-]{1,}[@]{1}[a-zA-Z]{1,}[\.]{1}[a-zA-Z]{2,4}([\.]{1}[a-zA-Z]{2,4})?$"))){
+           hasError = true
+           setError(prev => ({
                 ...prev,
                 "mail":{
                     "msg": 'Ingrese un mail válido', 
@@ -161,8 +159,8 @@ export const Register = () => {
             }))
         }
 
-        if(userData.password == undefined || userData.password == '' || !userData.password.length < 6){
-            setSuccess(false)
+        if(pwd == undefined || pwd == '' || pwd.length < 6){
+            hasError = true
             setError(prev => ({
                 ...prev,
                 "pass":{
@@ -180,8 +178,8 @@ export const Register = () => {
             }))
         }
 
-        if(userData.apellido == matchPwd || userData.password != matchPwd){
-            
+        if( pwd != matchPwd){
+            hasError = true
             setError(prev => ({
                 ...prev,
                 "checkPass":{
@@ -199,8 +197,26 @@ export const Register = () => {
             }))
         }
 
-        if(success == true ){
-            const fetchProducts = async () => {
+        if(!hasError){
+           setSuccess(true)
+           setUserData({
+            name: user, 
+            apellido: lastname, 
+            password: pwd, 
+            email: email,
+            })
+        }
+
+       
+  
+    }
+
+    useEffect(() => {
+        console.log("llega bien")
+        console.log(success)
+        console.log(userData)
+        if(success && userData){
+            const fetchProducts = async (userData) => {
                 try {
                     const response = await fetch('http://localhost:8080/auth/register', {
                         method: 'POST',
@@ -218,47 +234,23 @@ export const Register = () => {
             
                     const data = await response.json(); // Espera a que se resuelva la promesa
                     console.log(data); // Verifica los datos recibidos
-                    
+                    navigate('/login');
             
                 } catch (e) {
                     console.error('Error fetching products:', e); // Maneja el error aquí
                 }
             };
-
-            await fetchProducts();
-            navigate('/login');
-    
+             fetchProducts(userData);
+            
         }
-
-       
-        // try{
-        //     response = await axios.post(REGISTER_URL, JSON.stringify({user: name, lastname:apellido, email,  pwd:password}), {
-        //         headers: {'Content-Type': 'application/json'}, 
-        //         withCredentials:true
-        //     }
-        //     ); 
-        //     console.log(JSON.stringify(response))
-        //     setSuccess(true)
-
-        // }catch(e){
-        //     if(!e?.response){
-        //         setErrMsg('No server Response')
-        //     }else if (e.response?.status == 409){
-        //         setErrMsg('Username Taken'); 
-        //     }else{
-        //         setErrMsg('Registration Failed')
-        //     }
-        //     errRef.current.focus(); 
-        // }
-        
-    }
+    }, [success, userData])
 
 
   return (
     <>
     {success ? (
         <section>
-            <h1>Success!</h1>
+            <h1>Registro Exitoso!</h1>
             <p href=""> Sign In</p>
         </section>
     ) : (
@@ -266,94 +258,106 @@ export const Register = () => {
     <section>
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live='assertive'>{errMsg}</p>
         <div className=" mt-6 text-center" >
-        <h3 className='mb-4'>Registro de Usuario</h3>
-        <Box sx={{ width: '100%' }} >
-            <FormControl sx={{ width: '50%' }}  onSubmit={handleSubmit}>
-                <FormGroup >
-                    <span className={validName ? "valid" : "hide"}></span>
-                    <span className={validName || !user ? "hide" : "invalid"}></span>
-                   
-                    <TextField
-                        id='username'
-                        ref={userRef} 
-                        autoComplete='off' 
-                        onChange={(e) => setUser(e.target.value)} 
-                        label="Nombre"
-                        aria-invalid={validName ? "false" : "true"} 
-                        aria-describedby="uidnote" 
-                        onFocus={() => setUserFocus(true)} 
-                        onBlur={() => setUserFocus(false)} 
-                        error={error.name.status}
-                        helperText={error.name.msg}
-                    />
-                  
-                    {/* <p id='uidnote' className={userFocus && user && !validName ? "instructions" : "offscreen"}> 4 - 24 caracteres.</p> */}
-                   
-                    <TextField
-                        label="Apellido"
-                        error={error.apellido.status}
-                        helperText={error.apellido.msg}
-                        type="text" 
-                        id='lastname' 
-                        ref={lastNameRef} 
-                        autoComplete='off' 
-                        onChange={(e) => setLastName(e.target.value)} 
-                        aria-invalid={validLastName ? "false" : "true"} 
-                        aria-describedby="uidnote" 
-                        onFocus={() =>setLastNameFocus(true)} 
-                        onBlur={() => setLastNameFocus(false)} 
-                    />
-                 </FormGroup>
-               
-               <FormGroup>
-                    <TextField
-                        label="Email"
-                        type="text" 
-                        id='userEmail' 
-                        ref={useremail} 
-                        autoComplete='off' 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        aria-invalid={validEmail ? "false" : "true"} 
-                        aria-describedby="uidnote" 
-                        onFocus={() => setEmailFocus(true)} 
-                        onBlur={() => setEmailFocus(false)} 
-                        error={error.mail.status}
-                        helperText={error.mail.msg}
-                    />
-                    <TextField
-                        error={error.pass.status}
-                        helperText={error.pass.msg}
-                        id='pwd' 
-                        ref={pass} 
-                        autoComplete='off' 
-                        onChange={(e) => setPwd(e.target.value)} 
-                        aria-invalid={validPwd ? "false" : "true"} 
-                        aria-describedby="uidnote" 
-                        onFocus={() => setPwdFocus(true)} 
-                        onBlur={() => setPwdFocus(false)} 
-                        label="Contraseña"
-                    />
-                       
-                  
-                   
-                    <TextField
-                        error={error.checkPass.status}
-                        helperText={error.checkPass.msg}
-                        type="password" 
-                        id='matchPass' 
-                        ref={matchPass} 
-                        value={matchPwd}
-                        autoComplete='off' 
-                        onChange={(e) => setmatchPwd(e.target.value)} 
-                        aria-invalid={validMatchPwd ? "false" : "true"} 
-                        aria-describedby="uidnote" 
-                        onFocus={() => setMatchPwdFocus(true)} 
-                        onBlur={() => setMatchPwdFocus(false)} 
-                        label="Confirmar Contraseña"
-                    />
-                   </FormGroup>
-                <button type="submit" className="btn btn-primary col-lg-12 mt-4">Registrate</button>
-            </FormControl>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', borderRadius: '25px', marginTop:'6rem' }}>
+            <Card
+             sx={{
+                width: { xs: '90%', sm: '80%', md: '70%', lg: '60%' },
+                maxWidth: '600px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center', 
+                alignContent:'center',
+                textCenter: 'center', 
+                alignItems: 'center',
+                padding: '2rem'}}>
+        <Typography >Registro de Usuario</Typography>
+                <FormControl sx={{ width: '50%' }}  onSubmit={handleSubmit}>
+                    <FormGroup >
+                        <span className={validName ? "valid" : "hide"}></span>
+                        <span className={validName || !user ? "hide" : "invalid"}></span>
+                    
+                        <TextField
+                            id='username'
+                            ref={userRef} 
+                            autoComplete='off' 
+                            onChange={(e) => setUser(e.target.value)} 
+                            label="Nombre"
+                            aria-invalid={validName ? "false" : "true"} 
+                            aria-describedby="uidnote" 
+                            onFocus={() => setUserFocus(true)} 
+                            onBlur={() => setUserFocus(false)} 
+                            error={error.name.status}
+                            helperText={error.name.msg}
+                        />
+                    
+                        {/* <p id='uidnote' className={userFocus && user && !validName ? "instructions" : "offscreen"}> 4 - 24 caracteres.</p> */}
+                    
+                        <TextField
+                            label="Apellido"
+                            error={error.apellido.status}
+                            helperText={error.apellido.msg}
+                            type="text" 
+                            id='lastname' 
+                            ref={lastNameRef} 
+                            autoComplete='off' 
+                            onChange={(e) => setLastName(e.target.value)} 
+                            aria-invalid={validLastName ? "false" : "true"} 
+                            aria-describedby="uidnote" 
+                            onFocus={() =>setLastNameFocus(true)} 
+                            onBlur={() => setLastNameFocus(false)} 
+                        />
+                    </FormGroup>
+                
+                <FormGroup>
+                        <TextField
+                            label="Email"
+                            type="text" 
+                            id='userEmail' 
+                            ref={useremail} 
+                            autoComplete='off' 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            aria-invalid={validEmail ? "false" : "true"} 
+                            aria-describedby="uidnote" 
+                            onFocus={() => setEmailFocus(true)} 
+                            onBlur={() => setEmailFocus(false)} 
+                            error={error.mail.status}
+                            helperText={error.mail.msg}
+                        />
+                        <TextField
+                            error={error.pass.status}
+                            helperText={error.pass.msg}
+                            id='pwd' 
+                            ref={pass} 
+                            autoComplete='off' 
+                            onChange={(e) => setPwd(e.target.value)} 
+                            aria-invalid={validPwd ? "false" : "true"} 
+                            aria-describedby="uidnote" 
+                            onFocus={() => setPwdFocus(true)} 
+                            onBlur={() => setPwdFocus(false)} 
+                            label="Contraseña"
+                        />
+                        
+                    
+                    
+                        <TextField
+                            error={error.checkPass.status}
+                            helperText={error.checkPass.msg}
+                            type="password" 
+                            id='matchPass' 
+                            ref={matchPass} 
+                            value={matchPwd}
+                            autoComplete='off' 
+                            onChange={(e) => setmatchPwd(e.target.value)} 
+                            aria-invalid={validMatchPwd ? "false" : "true"} 
+                            aria-describedby="uidnote" 
+                            onFocus={() => setMatchPwdFocus(true)} 
+                            onBlur={() => setMatchPwdFocus(false)} 
+                            label="Confirmar Contraseña"
+                        />
+                    </FormGroup>
+                    <button type="submit" onClick={(e) => handleSubmit(e)} className="btn btn-primary col-lg-12 mt-4">Registrate</button>
+                </FormControl>
+            </Card>
         </Box>
             </div>
     </section>

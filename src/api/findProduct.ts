@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 
 export const findProductById = async (id, token) => {
+    console.log(id)
+    console.log(token)
     try{                    
         const response = await fetch(`http://localhost:8080/productos/find/${id}`, {
             method: 'GET',

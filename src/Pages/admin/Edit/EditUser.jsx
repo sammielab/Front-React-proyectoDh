@@ -116,17 +116,16 @@ const handleSubmit = async(e,usuario) =>{
 }
 
   useEffect(() => {
-    console.log("llega")
-    console.log(usuarioFormateado)
         const fetchUser = async() => {
           try{
             const data =  await editUsers(token, usuarioFormateado)
             
             if(data != undefined){
-              setAuth(() => ({
-                 data, 
-              }));
-              navigate('/')
+              data.token = token
+              setAuth(
+                 data)
+             ;
+              navigate('/usuarios')
             }
           }catch(e){
               console.log(e)

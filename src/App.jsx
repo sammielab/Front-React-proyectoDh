@@ -14,6 +14,7 @@ import RequireAuth from './Components/RequireAuth'
 import { AuthProvider } from './Context/AuthProvider'
 import {Home} from './Components/Home'
 import { Buscador } from './Components/Navegacion/Buscador'
+import { CategoriasAMostrar } from './Components/Categoria/CategoriasAMostrar'
 
 
 export const App = () => {
@@ -22,6 +23,7 @@ export const App = () => {
     <ProductosProvider>
     <NavBar></NavBar>
       <Buscador></Buscador>
+      <CategoriasAMostrar></CategoriasAMostrar>
       <Home></Home>
     <Footer></Footer>
   </ProductosProvider>

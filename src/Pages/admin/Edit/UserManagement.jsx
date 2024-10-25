@@ -8,7 +8,7 @@ import { UsuariosContext } from '../../../Context/UsuariosContext';
 const UserManagement = () => {
 
   const navigate = useNavigate();
-  const { usuarios, error } = useContext(UsuariosContext); // Usa el contexto para obtener los productos
+  const { usuarios, error } = useContext(UsuariosContext); 
   const queryClient = useQueryClient(); 
 
   const handleEdit = (id) =>{

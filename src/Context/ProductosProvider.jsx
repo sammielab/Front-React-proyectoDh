@@ -3,13 +3,15 @@ import {ProductosContext} from './ProductosContext'
 import { useQuery } from 'react-query'
 import { fetchProducts } from '../api/productsService'
 import {getAllProducts} from '../api/productsManageService'
+import useAuth from '../hooks/useAuth'
 
 
 export const ProductosProvider = ({children}) => {
-  const token = localStorage.getItem('authToken')
+    const {auth} = useAuth(); 
+    const token = auth?.token
     const [postsPerPage, setPostsPerPage] = useState(2)
     const [currentPage, setCurrentPage] = useState(0); // Estado para la página actual
-    const {data = [], error } = useQuery(['products', currentPage], () => fetchProducts(currentPage, postsPerPage, token),{keepPreviousData:true});
+    const {data = [], error } = useQuery(['products', currentPage], () => fetchProducts(currentPage, postsPerPage, token),{enabled: !!token, keepPreviousData:true});
     const [getTotalPages, setTotalPages] = useState(); 
 
     const calculatePages = async() => {

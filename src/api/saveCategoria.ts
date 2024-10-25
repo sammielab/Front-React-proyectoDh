@@ -2,16 +2,16 @@ import React from "react";
 import { useEffect } from "react";
 
 
-export const saveCategoria = async ( token, userData) => {
+export const saveCategoria = async ( token, formData) => {
+    console.log(token)
+  
     try{                    
         const response = await fetch('http://localhost:8080/categorias/save', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
-                'Content-Type': 'application/json',
-                
+                'Authorization': `Bearer ${token}`, 
             },
-            body: JSON.stringify(userData), 
+            body: formData, 
         });
 
         console.log(response)
@@ -49,7 +49,7 @@ export const saveCategoria = async ( token, userData) => {
 
 
     } catch (error) {
-        console.error('Error fetching products:', error); // Maneja el error aquí
+        console.error('Error fetching categorias:', error); // Maneja el error aquí
     }
 
     

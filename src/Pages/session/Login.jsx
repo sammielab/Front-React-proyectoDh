@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
-import Alert from '@mui/material/Alert';
-import TextField from '@mui/material/TextField';
-import { FormGroup } from '@mui/material';
-import Collapse from '@mui/material/Collapse';
 import { useLocation } from 'react-router-dom';
 import {authLogin} from '../../api/authLogin';
 import {getUserByEmail} from '../../api/getUserByEmail'
+import { Box, Card, Typography, TextField, Collapse, Alert } from '@mui/material';
 
 export const Login = () => {
   const {setAuth} = useAuth();  
@@ -15,8 +12,6 @@ export const Login = () => {
   const location = useLocation();
   let from = location.state?.from || '/'
   const navigate = useNavigate();
- console.log(location)
- console.log(from)
   const match = from?.pathname?.match(/^\/productos\/(\d+)$/);
   const [errMsg, setErrMsg] = useState('')
   const [success, setsuccess] = useState()
@@ -30,7 +25,7 @@ export const Login = () => {
 
   const [showAlert, setShowAlert] = useState({
     "msg":'', 
-    "status":Boolean
+    "status": false
 });
 
   const [error, setError] = useState({
@@ -53,30 +48,31 @@ export const Login = () => {
 
   //Fetch para el auth una vez que el success haya cambiado
   useEffect(() => {
-
-   if(success){
+    console.log(success)
+    console.log(userData)
+    if(success){
+    
     const fetch = async(userData) =>{
         try {
+          console.log(userData)
             const data = await authLogin(userData); 
+            console.log(data)
             if(data){
-
-              setTimeout(() => {
                     setShowAlert({
                         "msg": '',
                         "status": false
                     });
-                   }, 3000);
 
                    setToken(data.token); 
                    localStorage.setItem('authToken', token);
 
             }else{
-              setTimeout(() => {
+              
                 setShowAlert({
                   "msg": 'Login Inválido',
                   "status": true, 
                 })  
-              },3000);
+              
             }
            
         } catch(e){
@@ -95,28 +91,33 @@ export const Login = () => {
   //Cuando el token se haya setteado
   useEffect(() => {
 
-    if(userData){
+    if(token && userData.email){
     const fetchEmail = async() => {
       
       try {
-        const data = await getUserByEmail(userData.email, token); 
-        if(data){
-          data.token = token; 
-          setAuth(data);
-          if(match){
-            navigate(from);
-           }else{
-            navigate('/')
-          }
-        }
-
-
-        setTimeout(() => {
+        if(token){
+          const data = await getUserByEmail(userData.email, token); 
+          if(data){
+            data.token = token; 
+            setAuth(data);
+            if(match){
+              navigate(from);
+            }else{
+              navigate('/')
+            }
+         }
+         setTimeout(() => {
           setShowAlert({
               "msg": '',
               "status": false
           });
          }, 3000);
+        }else{
+          setShowAlert({
+            "msg": 'Token no disponible. Por favor, inicie sesión nuevamente.',
+            "status": true,
+          });
+        }
         
       }catch(e){
         setErrMsg('Error')
@@ -134,14 +135,21 @@ export const Login = () => {
 
 
 
+
   //Funcion de submit
   const handleSubmit = async (e) => {
     e.preventDefault(); 
 
-    console.log("LLega al submit")
+    setError({
+      password: { status: false, msg: '' },
+      mail: { status: false, msg: '' },
+    });
+  
+    let hasErrors = false;
+
     //Validaciones
     if(userData.email == '' || !userData.email.match(new RegExp("^[a-zA-Z0-9_.-]{1,}[@]{1}[a-zA-Z]{1,}[\.]{1}[a-zA-Z]{2,4}([\.]{1}[a-zA-Z]{2,4})?$","gi"))){
-      setsuccess(false);
+      hasErrors = true
       setError(prev => ({
         ...prev,
         "mail":{
@@ -153,7 +161,7 @@ export const Login = () => {
     }
 
     if(userData.password == '' || userData.password.length < 6){
-      setsuccess(false);
+      hasErrors = true
       setError(prev => ({
         ...prev,
         "password":{
@@ -163,74 +171,108 @@ export const Login = () => {
     })) 
     }
 
-    if(success != false){
+    console.log(success)
+   
+    if(!hasErrors){
       setsuccess(true)
+    }else {
+      setsuccess(false);
     } 
         
     };
 
 
   return (
-    <section>
-      {showAlert.status === true && (
-            <Collapse in={open}>
-                <Alert severity="error">{showAlert.msg}</Alert>
-            </Collapse>
-        )}
+<>
+    {showAlert.msg && showAlert.status && (
+      <Collapse in={showAlert.status}>
+        <Alert severity="error">{showAlert.msg}</Alert>
+      </Collapse>
+    )}
 
-      <div>
-        <h1>
-          Login
-        </h1>
-      </div>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderRadius: '25px',
+          marginTop: '6rem',
+         
+        }}
+      >
+          
+          
+        <Card
+          sx={{
+            width: { xs: '90%', sm: '80%', md: '70%', lg: '60%' },
+            maxWidth: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '2rem',
+          }}
+        >
+      
 
-{match ?  (
-  <h3>El login es obligatorio</h3>
-): (
-  <h3>Ingrese sus datos</h3>
-)}
-      <form className="row g-3" onSubmit={handleSubmit}>
-      <div className="col-auto">
-        <label for="staticEmail2" className="visually-hidden">Email</label>
-        <TextField
-          id='email'
-          label="Ingrese su mail"
-          name='email'
-          value={userData.email}
-          onChange={(e) => setUserData({
-            ...userData,
-            email: e.target.value
-          })}
-          variant="filled"
-          error={error.mail.status}
-          helperText={error.mail.msg}
-          type='email'
-        />
-
-      </div>
-      <div className="col-auto">
-        <label for="inputPassword2" className="visually-hidden">Password</label>
-        <TextField
-          id='password'
-          label="Ingrese su contraseña"
-          name='password'
-          value={userData.password}
-          onChange={(e)=>setUserData({
-            ...userData,
-            password: e.target.value
-          })}
-          variant="filled"
-          error={error.password.status}
-          helperText={error.password.msg}
-          type='password'
-        />
-      </div>
-      <div className="col-auto">
-        <button type="submit" className="btn btn-primary mb-3">Ingresá</button>
-      </div>
-</form>
-    </section>
+          <Typography variant="h5" component="div" gutterBottom>
+            Login
+          </Typography>
+  
+          <Typography variant="h6">
+            {match ? 'El login es obligatorio' : 'Ingrese sus datos'}
+          </Typography>
+  
+          <form className="row g-3" onSubmit={handleSubmit}>
+            <div className="col-auto">
+              <TextField
+                id="email"
+                label="Ingrese su mail"
+                name="email"
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    email: e.target.value,
+                  })
+                }
+                variant="filled"
+                error={error.mail.status}
+                helperText={error.mail.msg}
+                type="email"
+                fullWidth
+              />
+            </div>
+            <div className="col-auto">
+              <TextField
+                id="password"
+                label="Ingrese su contraseña"
+                name="password"
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    password: e.target.value,
+                  })
+                }
+                variant="filled"
+                error={error.password.status}
+                helperText={error.password.msg}
+                type="password"
+                fullWidth
+              />
+            </div>
+            <div className="col-auto">
+              <button type="submit" className="btn btn-primary mb-3">
+                Ingresá
+              </button>
+            </div>
+          </form>
+        </Card>
+      </Box>
+      </>
   )
+ 
 }
 
 

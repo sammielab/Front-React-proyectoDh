@@ -26,8 +26,7 @@ export  const CustomDay = ({ day, outsideCurrentMonth, selected,  unavailableDay
         console.log(day)
         let state = false; 
         unavailableDates.forEach((udate) => {
-            console.log(udate)
-            console.log(day)
+           
             if(udate.format('YYYY-MM-DD') == day.format('YYYY-MM-DD')){
                 state =  true;
             }

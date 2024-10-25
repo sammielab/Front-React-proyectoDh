@@ -4,6 +4,8 @@ import {Card} from '../../Components/Productos/Card'
 import NavBar from '../../Components/Navegacion/NavBar'
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { Footer } from '../../Components/Navegacion/Footer';
+import { Box, Typography } from '@mui/material';
 
 export const ProductosPage = () => {
 
@@ -20,29 +22,21 @@ export const ProductosPage = () => {
       return (
         <>
         <NavBar></NavBar>
-        <div>Productos</div>
+        <Typography variant='h5' className='light-color'>Listado de Productos</Typography>
         <hr />
+        <Box>
         <Stack spacing={2}>
           <Pagination count={getTotalPages} page={currentPage +1 }  onChange={(event, value) => setCurrentPage(value - 1)}  />
         </Stack>
-        {/* <div>
-          <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage == 0} >Anterior</button>
-          <span>{currentPage}</span>
-          <button onClick={() => setCurrentPage(currentPage + 1)}>Siguiente</button>
-        </div> */}
-        {/* <Pagination
-          totalPosts={products.length} 
-          postsPerPage={postsPerPage}
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-        /> */}
+       
         {products.map(product => (
             <Card
             product={product}
            
             />
         ))}
-       
+        </Box>
+       <Footer></Footer>
         </>
       )
     }
