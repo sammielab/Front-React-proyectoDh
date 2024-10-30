@@ -1,8 +1,53 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Proyecto de Gestión de Hospedaje
 
-Currently, two official plugins are available:
+## Índice
+1. Introducción
+2. [Estructura del Proyecto](#estructura-del-proyecto)
+3. Instalación
+4. Uso
+5. [Componentes Principales](#componentes-principales)
+6. API
+7. Contribuciones
+8. Licencia
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Introducción
+Este proyecto es una aplicación web desarrollada con React y Vite que permite la gestión de hospedajes por categorías y características, la búsqueda y reserva de los mismos. La aplicación incluye funcionalidades para  buscar, crear, editar y eliminar productos, así como también gestionar sus reservas, categorías y características. 
+
+## Estructura del Proyecto
+La estructura del proyecto es la siguiente:
+
+```
+src/
+    api/
+        ...
+    App.css
+    App.jsx
+    assets/
+    Components/
+        ...
+    Context/
+    hooks/
+    index.css
+    main.jsx
+    Pages/
+        ...
+vite.config.js
+```
+
+## Instalación
+Para instalar y ejecutar el proyecto localmente, sigue estos pasos:
+
+1. Clona el repositorio:
+   
+2. Navega al directorio del proyecto:
+ 
+3. Instala las dependencias:
+    ```sh
+    npm install
+    ```
+4. Inicia la aplicación:
+    ```sh
+    npm start
+    ```
+
