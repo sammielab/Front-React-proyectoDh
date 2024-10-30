@@ -5,7 +5,7 @@ import { CartModal } from "../CartModal";
 import useAuth from "../../hooks/useAuth";
 import { AppRegistration, Logout, Person } from '@mui/icons-material';
 import Login from '@mui/icons-material/Login';
-import { AppBar, Toolbar, Button, Menu, MenuItem, IconButton, Typography } from '@mui/material';
+import { AppBar, Box, Toolbar, Button, Menu, MenuItem, IconButton, Typography } from '@mui/material';
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -47,9 +47,12 @@ export default function NavBar() {
   return (
     <AppBar position="static" sx={{ backgroundColor: '#222D52', marginBottom:2 }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+       <Box sx={{ display: 'flex', alignItems: 'center'}}>
         <NavLink to='/'>
           <img src={logo} alt="logo" id="logo" style={{ height: '50px' }} />
         </NavLink>
+        <Typography className="light-color bold fs-2" sx={{ color: 'white' }}>Sentite como en casa</Typography>
+        </Box>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <ul style={{ display: 'flex', listStyleType: 'none', margin: 0, padding: 0 }}>
             <li>
