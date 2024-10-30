@@ -10,7 +10,7 @@ export const getUserByEmail = async (email, token) => {
         const response = await fetch(`http://localhost:8080/usuarios/findByEmail?email=${email}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
             },
         });
@@ -31,7 +31,7 @@ export const getUserByEmail = async (email, token) => {
         }else{
             
             try{
-                const data = await response.json(); // Espera a que se resuelva la promesa
+                const data = await response.json();
                 console.log(data)
                 return data; 
 
@@ -41,7 +41,7 @@ export const getUserByEmail = async (email, token) => {
         }
 
     } catch (error) {
-        console.error('Error fetching user:', error.message, error.stack); // Maneja el error aquí
+        console.error('Error fetching user:', error.message, error.stack); 
     }
 
     

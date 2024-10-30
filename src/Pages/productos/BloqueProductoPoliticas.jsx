@@ -3,7 +3,10 @@ import { Box, Typography, Grid } from '@mui/material';
 
 
 export const BloqueProductoPoliticas = ({politicas}) => {
-    console.log(politicas)
+  const mitad = Math.ceil(politicas.length / 2);
+  const primeraMitad = politicas.slice(0, mitad);
+  const segundaMitad = politicas.slice(mitad);
+
   return (
     <Box
     sx={{
@@ -23,23 +26,24 @@ export const BloqueProductoPoliticas = ({politicas}) => {
         gap: 2,
       }}
     >
-      {politicas.map((policy, index) => (
-        <Box
-          key={index}
-          sx={{
-            flex: 1,
-            padding: 2,
-            backgroundColor: '#ffffff',
-            borderRadius: 1,
-            boxShadow: 1,
-          }}
-        >
-          <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
-            {policy}
-          </Typography>
-          <Typography variant="body2">{policy.description}</Typography>
+      
+     
+        <Box sx={{ width: '50%' }}>
+          {primeraMitad.map((policy, index) => (
+            <Typography key={index} variant="body2">
+              {policy}
+            </Typography>
+          ))}
         </Box>
-      ))}
+        <Box sx={{ width: '50%' }}>
+          {segundaMitad.map((policy, index) => (
+            <Typography key={index} variant="body2">
+              {policy}
+            </Typography>
+          ))}
+        </Box>
+   
+
     </Box>
   </Box>
   );

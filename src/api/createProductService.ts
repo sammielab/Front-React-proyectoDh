@@ -9,7 +9,7 @@ export const saveFetch = async ( token, userData) => {
         const response = await fetch('http://localhost:8080/productos/save', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
                 
             },
@@ -24,7 +24,7 @@ export const saveFetch = async ( token, userData) => {
 
         const text = await response.text();
         
-        // Verifica si hay contenido antes de intentar parsear
+
         let data;
         if (text) {
             data = JSON.parse(text);
@@ -46,12 +46,12 @@ export const saveFetch = async ( token, userData) => {
     //             throw new Error('No se pudo eliminar el producto')
     //         }
 
-    //    // Muestra los datos si es necesario
+   
     //     return data; // Devuelve la respuesta si la necesitas
 
 
     } catch (error) {
-        console.error('Error fetching products:', error); // Maneja el error aquí
+        console.error('Error fetching products:', error); 
     }
 
     

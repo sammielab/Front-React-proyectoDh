@@ -6,21 +6,26 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { getCategoriaById } from '../../api/getCategoriaById';
 import { Box, Grid, Card, CardContent, Typography } from '@mui/material';
+import {editProducts} from '../../api/editProducts';
+
 
 export const CheckCategoria = ({id, token}) => {
-
+  console.log(id)
   const [categorias, setCategorias] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState(''); 
-  const [product, setProduct] = useState();
-  const [productDelete, setProductDelete] = useState();
-  const [productFormateado, setProductFormateado] = useState();
+  const [product, setProduct] = useState({});
+  const [productDelete, setProductDelete] = useState({});
+  const [productFormateado, setProductFormateado] = useState({});
   const [error, setError] = useState(null);
 
   const fetchProducto = async () => {
     try {
       const data = await findProductById(id, token);
       setProduct(data);
-      setSelectedCategoria(data.categoria?.id || '');
+      console.log(data);
+      if(data){
+        setSelectedCategoria(data?.categoria || '');
+      }
     } catch (e) {
       console.log(e);
     }
@@ -50,35 +55,32 @@ export const CheckCategoria = ({id, token}) => {
         id: data.id,
       };
       setProductFormateado({
+        ...product, 
         id: product.id,
-        titulo: product.titulo,
-        descripcion: product.descripcion,
-        caracteristicas: product.caracteristicas,
-        disponibilidad: product.disponibilidad,
-        precio: product.precio,
-        categoria: categoriaFormateada,
+        categoria: categoriaFormateada || product.categoria,
       });
-
-      const response = await fetch(`http://localhost:8080/productos/update`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...productFormateado,
-          categoria: categoriaFormateada,
-        }),
-      });
-
-      console.log(response);
-      if (!response.ok) {
-        throw new Error('Error guardando cambios');
-      }
-    } catch (e) {
-      setError('Error guardando las características');
+    }catch(e){
+      console.log(e.message);
     }
+     
   };
+
+
+  useEffect(() => {
+
+    const updateProducto = async () => {
+      try {
+        const data = await editProducts(token,productFormateado );
+        console.log(data); 
+        return data;
+      }catch(e)
+      {console.log(e.message)}
+    }
+
+    if(productFormateado.id){
+      updateProducto(); 
+    }
+  }, [productFormateado])
 
   const handleCheckboxChange = (event) => {
     setSelectedCategoria(event.target.value);

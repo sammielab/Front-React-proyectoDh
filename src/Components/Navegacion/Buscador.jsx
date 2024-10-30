@@ -1,5 +1,5 @@
 import React,  { useState,useEffect } from 'react'
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Checkbox, FormControlLabel, FormGroup, Button, Typography } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import {  Autocomplete } from '@mui/material';
@@ -7,7 +7,12 @@ import { LocalizationProvider,  DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import useAuth from '../../hooks/useAuth';
+import { getCategorias } from '../../api/getCategorias';
 import {fetchCityPattern} from "../../api/findCityByPattern";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+
 
 export const Buscador = () => {
   const [location, setLocation] = useState('');
@@ -19,6 +24,10 @@ export const Buscador = () => {
   ]);
   const {auth} = useAuth();
   const token = auth?.token; 
+
+  const [categorias, setCategorias] = useState([]);
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+  const navigate = useNavigate();
 
   const handleLocationChange = (event, newValue) => {
     setLocation(newValue);
@@ -46,6 +55,45 @@ export const Buscador = () => {
       }
     }, [location]);
 
+
+
+
+    useEffect(() => {
+      const fetchCategorias = async () => {
+        try {
+          const response = await getCategorias(token);
+          console.log(response)
+          setCategorias(response);
+        } catch (error) {
+          console.error('Error al obtener las categorías:', error);
+        }
+      };
+    
+      fetchCategorias();
+    }, []);
+
+
+    //Function que recibe un event y modifica el valor de la categoria seleccionada 
+    const handleCheckboxChange = (event) => {
+      const { value, checked } = event.target;
+      setSelectedCategorias((prevSelected) =>
+        checked ? [...prevSelected, value] : prevSelected.filter((id) => id !== value)
+      );
+    };
+
+    const handleBuscar = () => {
+      
+      if(selectedCategorias.length > 0 ){
+        navigate('/products/results', { state: { categorias: selectedCategorias } });
+      }else if(location && selectedDate && checkoutDate){
+        const formattedSelectedDate = moment(selectedDate).format('YYYY-MM-DD');
+      const formattedCheckoutDate = moment(checkoutDate).format('YYYY-MM-DD');
+        navigate('/search/results', { state: { location, selectedDate: formattedSelectedDate, checkoutDate: formattedCheckoutDate } });
+      }else{
+        // navigate('/productos')
+      };
+    };
+
   return (
     <Box sx={{
       display: 'flex', 
@@ -63,7 +111,7 @@ export const Buscador = () => {
           gap: 2,
           boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
           width: { sm: '100%', xs: '100%', lg: '100%' },
-          marginTop: '2rem', // Esto lo separa del navbar
+          marginTop: '2rem',
           maxWidth: '80%',
           mx: 'auto',
         }}
@@ -142,6 +190,26 @@ export const Buscador = () => {
         )}
       />
     </LocalizationProvider>
+
+{categorias && categorias.length > 0 && (
+  <FormGroup row>
+  {categorias.map((categoria) => (
+    <Typography variant="h6" key={categoria.id}> {categoria.titulo} </Typography>,
+    <FormControlLabel
+      key={categoria.id}
+      
+      control={
+        <Checkbox
+          value={categoria.id}
+          onChange={handleCheckboxChange}
+        />
+      }
+      label={categoria.titulo}
+    />
+  ))}
+</FormGroup>
+)}
+
   </Box>
       </Box>
         <Button
@@ -153,6 +221,7 @@ export const Buscador = () => {
             backgroundColor: '#222D52', 
             fontColor: '#D9CBBF'
           }}
+          onClick={(e) => handleBuscar(e)}
         >
           Buscar
         </Button>
@@ -160,5 +229,3 @@ export const Buscador = () => {
 </Box>
   );
 };
-
-

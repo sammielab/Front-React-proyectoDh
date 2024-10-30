@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { findProductById } from '../../api/findProduct';
 import { fetchCaracteristicas } from '../../api/fetchCaracteristicas';
 import { Box, Card } from '@mui/material';
+import {editProducts} from '../../api/editProducts';
 
 export const AddCaract = ({ token, id }) => {
   const [caracteristicas, setCaracteristicas] = useState([]);
@@ -45,40 +46,35 @@ export const AddCaract = ({ token, id }) => {
       selectedCaracteristicas.includes(caracteristica.id)
     );
 
-    const nuevoProductoFormateado = {
+    const categoriaFormateada = {id: product.categoria}
+
+    setProductFormateado({
+      ...product, 
       id: product.id,
-      titulo: product.titulo,
-      descripcion: product.descripcion,
-      caracteristicas: filteredCaracteristicas,
-      disponibilidad: product.disponibilidad,
-      precio: product.precio,
-      categoria: product.categoria,
-    };
-
-    setProductFormateado(nuevoProductoFormateado);
-    
-    try {
-      const response = await fetch(`http://localhost:8080/productos/update`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevoProductoFormateado),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error guardando cambios");
-      }
-      
-      // Si la respuesta es exitosa, limpia el error
-      setError(null);
-      console.log('Cambios guardados exitosamente');
-      
-    } catch (e) {
-      setError("Error guardando las características");
-    }
+      categoria: categoriaFormateada,
+      caracteristicas: filteredCaracteristicas || product.caracteristicas
+    });  
+  
   };
+
+
+  useEffect(() => {
+    
+    const updateProducts = async () => {
+    try{
+      if(productFormateado){
+        console.log(productFormateado)
+        const data = await editProducts(token,productFormateado );
+        console.log(data)
+        return data; 
+      }
+    }catch(e){
+      console.log(e.message)
+    }
+  }
+
+    updateProducts(); 
+  }, [productFormateado]);
 
   const handleCheckboxChange = (id) => {
     if (selectedCaracteristicas.includes(id)) {

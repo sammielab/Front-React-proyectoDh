@@ -96,9 +96,9 @@ export const ReservasComponent = () => {
       justifyContent="center"
       alignItems="center"
       flexDirection="column"
-      sx={{ width: '100%', maxWidth: 600, margin: '0 auto', mt: 4 }}
+      sx={{ width: '100%', maxWidth: 800, margin: '0 auto', mt: 4 }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" sx={{color:'white'}} gutterBottom>
         Lista de Reservas
       </Typography>
 
@@ -115,25 +115,31 @@ export const ReservasComponent = () => {
                   <HotelIcon color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                    primary={`Checkin: ${reserva.check_in}`}
+                    primary={`Checkin: `}
+                    secondary={reserva.check_in}
                 //   primary={`Reserva de ${reserva.nombreCliente}`}
                 //   secondary={`Fecha: ${reserva.fecha} - Habitación: ${reserva.habitacion}`}
                 />
                 <ListItemText
-                    primary={`Checkout: ${reserva.check_out}`}
+                    primary={`Checkout: `}
+                    secondary={reserva.check_out}
                 />
                 <ListItemText
-                    primary={`Fecha de reserva: ${reserva.fecha_reserva}`}
+                    primary={`Fecha de reserva: `}
+                    secondary={reserva.fecha_reserva}
                 />
                 <ListItemText
-                    primary={`A nombre de: ${auth.name} ${auth.apellido}`}
+                    primary={`A nombre de: `}
+                    secondary={`${auth.name} ${auth.apellido}`}
                 />
                 <ListItemText
-                    primary={`Producto: ${reserva.producto.titulo}`}
+                    primary={`Producto: `}
+                    secondary={reserva.producto.titulo}
                 />
-                <ListItemButton
+                <Button
                 onClick={()=>handlePuntuar(reserva.producto.id)} 
-               >Puntuar</ListItemButton>
+               >Puntuar
+               </Button>
               </ListItem>
             ))}
           </List>

@@ -3,11 +3,13 @@ import {fetchCaracteristicas} from '../../api/fetchCaracteristicas';
 import {deleteCaracteristica} from '../../api/deleteCaracteristica'
 import NavBar from '../../Components/Navegacion/NavBar'
 import { useNavigate } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth';
 
 
 export const CaracteristicasPage = () => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('authToken');
+    const {auth} = useAuth(); 
+    const token = auth?.token; 
     const [caracteristicas, setCaracteristicas] = useState([]);
 
     const getCaracteristicas = async() => {

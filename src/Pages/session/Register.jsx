@@ -72,13 +72,11 @@ export const Register = () => {
 
     useEffect(() => {
         const result = USER_REGEX.test(user); 
-        // console.log(result)
         setValidName(result);
     }, [user])
 
     useEffect(() => {
         const result = USER_REGEX.test(lastname); 
-        // console.log(result)
         setValidLastName(result);
     }, [lastname])
 
@@ -221,7 +219,7 @@ export const Register = () => {
                     const response = await fetch('http://localhost:8080/auth/register', {
                         method: 'POST',
                         headers: {
-                            // 'Authorization': , // Asegúrate de que `token` esté definido
+                            // 'Authorization': , 
                             'Content-Type': 'application/json',
                             withCredentials:true,
                         },
@@ -232,12 +230,12 @@ export const Register = () => {
                         throw new Error("Not ok");
                     }
             
-                    const data = await response.json(); // Espera a que se resuelva la promesa
+                    const data = await response.json();
                     console.log(data); // Verifica los datos recibidos
                     navigate('/login');
             
                 } catch (e) {
-                    console.error('Error fetching products:', e); // Maneja el error aquí
+                    console.error('Error fetching products:', e); 
                 }
             };
              fetchProducts(userData);

@@ -36,7 +36,7 @@ export const ProductGallery = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    adaptiveHeight: true, // Hace que el slider se ajuste a la altura de la imagen
+    adaptiveHeight: true, 
   };
 
   return (
@@ -53,7 +53,7 @@ export const ProductGallery = () => {
                 <div key={index}>
                   <CardMedia
                     component="img"
-                    src={`data:image/jpeg;base64,${img.imagen}`} // Asegúrate de acceder a la propiedad correcta
+                    src={`data:image/jpeg;base64,${img.imagen}`}  
                     alt={`Imagen ${index + 1}`}
                     sx={{
                       width: '100%',

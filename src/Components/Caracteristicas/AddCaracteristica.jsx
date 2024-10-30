@@ -9,7 +9,7 @@ export const AddCaracteristica = () => {
     const [nombre, setNombre] = useState('');
     const [userData, setUserdata] = useState('');
     const {auth} = useAuth();
-    const token = auth.token
+    const token = auth?.token
     const [error, setError] = useState('');
 
     const handleSubmit = async(e) => {

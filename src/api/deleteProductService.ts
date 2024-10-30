@@ -9,7 +9,7 @@ export const deleteProduct = async (id,token) => {
         const response = await fetch(`http://localhost:8080/productos/delete/${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
             },
         });
@@ -32,7 +32,7 @@ export const deleteProduct = async (id,token) => {
 
 
     } catch (error) {
-        console.error('Error fetching products:', error); // Maneja el error aquí
+        console.error('Error fetching products:', error); 
     }
 
     

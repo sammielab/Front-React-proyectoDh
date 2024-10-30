@@ -114,8 +114,8 @@ export const VerProductoPage = () => {
                     puntuacion = puntuacion + puntuacionRecomendacion
                     const usuarioIdBuscado = recomendacion.usuario.id;
                     const userData = await getUserById(token, usuarioIdBuscado);
-                    recomendacion.usuarioNombre = userData.name; // Guardamos el nombre en la recomendación
-                    return recomendacion; // Retornamos la recomendación actualizada
+                    recomendacion.usuarioNombre = userData.name;
+                    return recomendacion; 
                 })
 
             );
@@ -201,9 +201,20 @@ export const VerProductoPage = () => {
         <Card sx={{ width: '80%', textAlign: 'center', justifyItems: 'center' }}>
             {product && (
             <CardContent>
-                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 24 }}>
-                    {product.titulo}
-                </Typography>
+                <Box>
+                    
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'Center' }}>
+                        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 24 }}>
+                            {product.titulo}
+                        </Typography>
+                    {auth && auth.token && (
+                        <CardActions>
+                            <FavButton id={product.id}></FavButton>
+                        </CardActions>
+                     ) }
+                    </Box>
+                </Box>
+             
                 <Typography variant="h5" component="div">
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>{product.descripcion}</Typography>
@@ -219,6 +230,7 @@ export const VerProductoPage = () => {
                       {getIconByCaracteristic(caracteristica.nombre)}   {caracteristica.nombre}
                     </Typography>
                 ))}
+                <hr />
 
             <ProductIMG
             imgdtos={product.imgdtos}
@@ -236,15 +248,6 @@ export const VerProductoPage = () => {
 
                 <Button onClick={handleReserva}>Reservar</Button>
 
-                {auth && auth.token && (
-                    <Box>
-                        <CardActions>
-                            <FavButton id={product.id}></FavButton>
-                        </CardActions>
-
-                       
-                    </Box>
-                ) }
                 
              
                    
@@ -306,9 +309,12 @@ export const VerProductoPage = () => {
               
             </CardContent>
         )}
-       <BloqueProductoPoliticas
-                 politicas={product.politicas}
-                 ></BloqueProductoPoliticas>
+        {product && product.politicas && (
+            <BloqueProductoPoliticas
+            politicas={product.politicas}
+            ></BloqueProductoPoliticas>
+        )}
+            
         </Card>
     </Box>
     <Footer></Footer>

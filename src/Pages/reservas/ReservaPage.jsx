@@ -20,6 +20,7 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import {saveReserva} from '../../api/createReserva';
 import { getUserByEmail } from '../../api/getUserByEmail';
+import { Footer } from '../../Components/Navegacion/Footer';
 
 
 export const ReservaPage = () => {
@@ -72,7 +73,7 @@ const [error, setError] = useState({
   if (data.length > 0) {
     console.log('Nuevos productos:', data);
 
-    // Aquí puedes manejar otras acciones cuando data cambie
+ 
   } else {
     console.log('No hay productos disponibles.');
   }
@@ -86,16 +87,16 @@ useEffect(() => {
 
 const buscarProductoYFetch = async (id, data, token) => {
 
-  // Buscar el producto en el array por su id
+
   const productoEncontrado = data.find((producto) => producto.id == id);
 
   if (productoEncontrado) {
     const productoDetallado = await findProductById(id, token);
-    // Puedes manejar el resultado aquí, como actualizar el estado o mostrarlo en la UI.
+   
     if (productoDetallado) {
       setProductoDetallado(productoDetallado)
       console.log(productoDetall)
-      return productoDetallado; // Retorna los detalles si necesitas usarlos.
+      return productoDetallado;
     } else {
       console.error('No se encontraron detalles para el producto con el id:', id);
     }
@@ -212,19 +213,19 @@ setShowAlert({
             </Collapse>
         )}
 
-        <Box component="section"   justifyContent="center" display="flex" 
+        <Box component="section" justifyContent="center" display="flex" 
         alignItems="start"
-        bgcolor="#d9cbb8" 
+       
             >
           <Card  
            sx={{ 
             borderRadius: 4, 
             mt:4,
             width: '100%', 
-            maxWidth: 400, 
+            maxWidth: 500, 
             mx: 'auto', 
-            p: 2, // Padding interno para que los DatePickers no estén tan cerca de los bordes
-            boxShadow: 3, // Sombra para darle un mejor aspecto a la tarjeta
+            p: 2, 
+            boxShadow: 3,
           }}
             >
             <LocalizationProvider  dateAdapter={AdapterMoment}>
@@ -242,10 +243,10 @@ setShowAlert({
           </LocalizationProvider>
           </Card>
         </Box>
-        <Box justifyContent="center" textAlign="center" alignContent="center" alignItems="center" display="flex" flexDirection="column" mt={4}>
+        <Box     justifyContent="center" textAlign="center" alignContent="center" alignItems="center" display="flex" flexDirection="column" mt={4}>
           
           {productoDetall && productoDetall.titulo  && (
-            <Card  sx={{ maxWidth: '80%', borderRadius: 4, padding:2,   margin: '2 auto' }}>
+            <Card   sx={{ maxWidth: '80%', borderRadius: 4, padding:2, marginBottom:6,   margin: '2 auto' }}>
            {busquedaRealizada ? (
               <CardContent mt={2}>
               <Typography variant="h5" gutterBottom>
@@ -305,9 +306,6 @@ setShowAlert({
                 value={productoDetall.precio}
                 fullWidth 
                 />
-              
-                
-              
                 </Box>
                 <Box 
                 display="flex" 
@@ -365,19 +363,21 @@ setShowAlert({
         {busquedaRealizada && ( 
         <>
             {data && data.length > 0 ? (
-            <List>
-              <h4>Productos con Disponibilidad</h4>
-              {data.map((producto) => (
-                <ListItem key={producto.id}>
-                  <ListItemButton>
-                  <ListItemText primary={producto.titulo} /> 
-                  <ListItemText primary={producto.descripcion} /> 
-                  <ListItemText primary={producto.precio} /> 
-                  <Button onClick={() => handleChangeProduct(producto.id)}>Seleccionar</Button>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+              <Box sx={{backgroundColor: "#d9cbb8"}}>
+                <List>
+                  <h4>Productos con Disponibilidad</h4>
+                  {data.map((producto) => (
+                    <ListItem key={producto.id}>
+                      <ListItemButton>
+                      <ListItemText primary={producto.titulo} /> 
+                      <ListItemText primary={producto.descripcion} /> 
+                      <ListItemText primary={producto.precio} /> 
+                      <Button onClick={() => handleChangeProduct(producto.id)}>Seleccionar</Button>
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
           ) : (
             <Typography variant="body1" color="error">
               No hay productos disponibles.
@@ -386,6 +386,7 @@ setShowAlert({
           )}
     </>
         )}
+        <Footer></Footer>
         </>
   )
 }

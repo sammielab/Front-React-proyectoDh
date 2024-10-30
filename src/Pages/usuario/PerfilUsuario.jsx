@@ -46,7 +46,7 @@ export const PerfilUsuario = () => {
         "status":Boolean
     });
 
-    //Obtengo el user completo por email
+
     const findByEmail = async() => {
         try{
             const data = await getUserByEmail(auth.email, token); 
@@ -61,7 +61,7 @@ export const PerfilUsuario = () => {
     }, [token])
 
 
-    //edito los datos de contraseña
+  
     const handleEditPassword = async() =>{
       
             if(!password){
@@ -150,7 +150,7 @@ export const PerfilUsuario = () => {
         
     }
 
-    //Edito los datos de correo 
+
     const handleEditMail = async() => {
 
         if(!email){
@@ -269,9 +269,9 @@ export const PerfilUsuario = () => {
     };
   
     const handleSubmit = () => {
-      // Lógica para manejar el envío de los nuevos datos
+
       console.log('Enviando nuevos datos:', newData);
-      // Puedes resetear el input o manejar los datos como desees
+    
       setShowNewInput(false);
       setNewData('');
     };

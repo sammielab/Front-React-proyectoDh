@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 export const ProductsManagement = () => {
   const navigate = useNavigate();
-  const { products, error } = useContext(ProductosManageContext); // Usa el contexto para obtener los productos
+  const { products, error } = useContext(ProductosManageContext); 
   const queryClient = useQueryClient(); 
 
   const { auth } = useAuth(); 

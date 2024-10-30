@@ -1,5 +1,5 @@
 import React, { useEffect,useState, useContext } from 'react'
-import { useParams } from "react-router-dom"; // Importa useParams
+import { useParams } from "react-router-dom"; 
 import { editUsers } from '../../../api/editUsers';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
@@ -40,7 +40,7 @@ useEffect(() => {
             const response = await fetch(`http://localhost:8080/usuarios/find/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json',
                     withCredentials:true,
                 },
@@ -66,7 +66,7 @@ useEffect(() => {
             setUsuario(data)
     
         } catch (e) {
-            console.error('Error fetching products:', e); // Maneja el error aquí
+            console.error('Error fetching products:', e); 
         }
     };
     fetchUser(); 

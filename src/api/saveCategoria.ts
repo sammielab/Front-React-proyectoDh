@@ -49,7 +49,7 @@ export const saveCategoria = async ( token, formData) => {
 
 
     } catch (error) {
-        console.error('Error fetching categorias:', error); // Maneja el error aquí
+        console.error('Error fetching categorias:', error); 
     }
 
     

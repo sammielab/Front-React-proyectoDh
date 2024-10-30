@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"; // Importa useParams
 import { useState, useEffect } from 'react'
 import {getCategoriaById} from '../../../api/getCategoriaById'
 import {updateCategoria} from '../../../api/editCategoria'
+import useAuth from '../../../hooks/useAuth'
 
 
 const EditCategoriasPage = () => {
@@ -11,7 +12,8 @@ const EditCategoriasPage = () => {
   const [categoriaById, setCategoriaById] = useState();
   const [titulo, setTitulo] = useState('');
   const [error, setError] = useState('');
-  let token = localStorage.getItem('authToken');
+  const {auth} = useAuth();
+  let token = auth?.token; 
 
   const getCategoria = async () =>{
     try{
@@ -24,14 +26,14 @@ const EditCategoriasPage = () => {
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto
+    e.preventDefault(); 
 
     if (!titulo) {
         setError('El campo de título es obligatorio');
         return;
     }
 
-    setError(''); // Limpiar cualquier error previo
+    setError('');
 
     const userData = {
       "id":id,
@@ -39,7 +41,7 @@ const EditCategoriasPage = () => {
     }
 
     try {
-        await updateCategoria(token, userData); // Llamar a la API para actualizar el producto
+        await updateCategoria(token, userData);
         alert('Título actualizado con éxito');
     } catch (e) {
         console.error('Error al actualizar el producto', e);

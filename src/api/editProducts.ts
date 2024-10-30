@@ -3,17 +3,18 @@ import { useEffect } from "react";
 
 
 
-export const editUsers = async (token, userData) => {
+export const editProducts = async (token, userData) => {
     console.log(userData)
+    console.log(token)
     try{                    
-        const response = await fetch('http://localhost:8080/usuarios/update', {
+        const response = await fetch(`http://localhost:8080/productos/update`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData)
-        });
+            body: JSON.stringify(userData),
+          });
 
         console.log(response)
         if (!response.ok) {
@@ -23,11 +24,10 @@ export const editUsers = async (token, userData) => {
     
             if(text){
                 data = JSON.parse(text)
+                throw new Error(data.error)
             }else{
-                throw new Error(text)
-            }
-
               throw new Error("Not ok");
+            }
         }else{
             const data = await response.json();
             console.log(data); 
@@ -35,8 +35,7 @@ export const editUsers = async (token, userData) => {
         }
 
     } catch (error) {
-        console.error('Error fetching products:', error); 
-    }
+        console.error('Error updating the product:', error.message);
 
-    
+    }
 }

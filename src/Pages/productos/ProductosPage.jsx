@@ -18,7 +18,6 @@ export const ProductosPage = () => {
     };
 
 
-    // const currentPosts = products.slice(firstPostIndex, lastPostIndex)
       return (
         <>
         <NavBar></NavBar>

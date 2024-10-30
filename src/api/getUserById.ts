@@ -8,7 +8,7 @@ export const getUserById = async (token, id) => {
         const response = await fetch(`http://localhost:8080/usuarios/find/${id}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, // Asegúrate de que `token` esté definido
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
             },
         });
@@ -19,7 +19,7 @@ export const getUserById = async (token, id) => {
         }else{
             
             try{
-                const data = await response.json(); // Espera a que se resuelva la promesa
+                const data = await response.json();
                 console.log(data)
                 return data; 
 
@@ -29,7 +29,7 @@ export const getUserById = async (token, id) => {
         }
 
     } catch (error) {
-        console.error('Error fetching user:', error.message, error.stack); // Maneja el error aquí
+        console.error('Error fetching user:', error.message, error.stack); 
     }
 
     

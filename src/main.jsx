@@ -36,6 +36,8 @@ import {ConfirmacionReservaPage} from './Pages/reservas/ConfirmacionReservaPage.
 import {ReservasUsuario} from './Pages/reservas/ReservasUsuario.jsx'
 import {PuntuarReserva} from './Pages/reservas/PuntuarReserva.jsx'
 import {ProductGallery} from './Pages/productos/ProductGallery.jsx';
+import {BusquedaResultados} from './Pages/BusquedaRespuesta.jsx'
+import {BusquedaResultadosUbicacion} from './Pages/productos/BusquedaResultadosUbicacion.jsx'
 
 const query = new QueryClient();
 
@@ -68,7 +70,16 @@ const router = createBrowserRouter([
   {
     path:'/products', 
     element: <ProductosManageProvider> <ProductsManagement></ProductsManagement> </ProductosManageProvider>,
-  },{
+  },
+  {
+    path:'/products/results',
+    element:<ProductosManageProvider><BusquedaResultados></BusquedaResultados></ProductosManageProvider>
+  },
+  {
+    path:'/search/results', 
+    element:<ProductosManageProvider><BusquedaResultadosUbicacion></BusquedaResultadosUbicacion></ProductosManageProvider>
+  },
+  {
     path:'/products/add',
     element: <AgregarProductos></AgregarProductos>
   },

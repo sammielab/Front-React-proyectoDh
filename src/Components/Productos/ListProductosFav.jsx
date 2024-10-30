@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -11,7 +11,7 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { getUserByEmail } from '../../api/getUserByEmail';
 import useAuth from "../../hooks/useAuth";
 import { useState } from 'react';
-import { FavoriteBorder } from '@mui/icons-material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { editUsers } from '../../api/editUsers';
 
 export const ListProductosFav = () => {
@@ -68,30 +68,35 @@ useEffect(() => {
   return (
     <>
       <Box>
-                <h1>Productos Favoritos</h1>
+                <Typography variant='h5' sx={{color:'white', marginBottom: 2}}>Productos Favoritos</Typography>
                 {user  ? (
-                    <List>
-                        {user.productosFavoritos ? (
-                            user.productosFavoritos.map((producto) => (
-                                <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <FavoriteBorder />
-                                    </ListItemIcon>
-                                  <ListItemText>{producto.titulo}</ListItemText>
-                                  <Button onClick={(e) => handleEliminarFav(e,producto.id)} >Eliminar de favoritos </Button>
-                                </ListItemButton>
-                            </ListItem>
-                            ))
-                          
-                        ): (
-                            <p>asd</p>
-                        )}
-                        
-                    </List>
+                    <Card>
+                        <CardContent>
+                            <List>
+                                {user.productosFavoritos ? (
+                                    user.productosFavoritos.map((producto) => (
+                                        <ListItem disablePadding>
+                                        <ListItemButton>
+                                            <ListItemIcon>
+                                                <Favorite />
+                                            </ListItemIcon>
+                                        <ListItemText>{producto.titulo}</ListItemText>
+                                        <Button onClick={(e) => handleEliminarFav(e,producto.id)} >Eliminar de favoritos </Button>
+                                        </ListItemButton>
+                                    </ListItem>
+                                    ))
+                                
+                                ): (
+                                    <p>asd</p>
+                                )}
+                                
+                            </List>
+                        </CardContent>
+                    </Card>
                 ) : (
                     <p>No tienes productos favoritos.</p> // Mensaje si no hay productos favoritos
                 )}
+               
             </Box>
     </>
   )
